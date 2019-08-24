@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cool_store/states/detail_state.dart';
 import 'package:cool_store/utils/constants.dart';
+import 'package:cool_store/widgets/GalleryView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,12 @@ class ImageView extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        _showImageGallery(context, state);
+        if (!state.isLoading)
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => GalleryView(product: state.product)));
       },
       child: state.isLoading
           ? Container(
@@ -47,32 +53,5 @@ class ImageView extends StatelessWidget {
               }).toList(),
             ),
     );
-  }
-
-  _showImageGallery(context, DetailState state) {
-    showDialog(
-        context: context,
-        builder: (context) => PageView.builder(
-              itemCount: state.product.images.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 17.0, vertical: 17),
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.blueGrey,
-                          offset: Offset(0, 10),
-                          blurRadius: 10,
-                        )
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image:
-                              NetworkImage('${state.product.images[index]}'))),
-                );
-              },
-            ));
   }
 }

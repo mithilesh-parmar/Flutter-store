@@ -7,7 +7,9 @@ import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ProductDescription.dart';
 import 'package:cool_store/widgets/ProductTitle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 class DetailScreen extends StatefulWidget {
   final Product _product;
@@ -19,11 +21,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  Future<List<Product>> getRelatedProducts() async {
-    return Services().fetchProductsByCategory(
-        categoryId: widget._product.categoryId, page: 1);
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -44,9 +41,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   pinned: true,
                   floating: false,
                   expandedHeight: Constants.screenAwareSize(330, context),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: ImageView(),
-                  ),
+                  flexibleSpace: FlexibleSpaceBar(background: ImageView()),
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -56,6 +51,57 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Column(
                       children: <Widget>[
                         ProductTitle(widget._product),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 4,
+                              child: FlatButton.icon(
+                                  onPressed: () {},
+                                  textColor: Colors.white,
+                                  color: Theme.of(context).accentColor,
+                                  icon: Icon(
+                                    Icons.add_shopping_cart,
+                                    color: Colors.white,
+                                  ),
+                                  label: Text(
+                                    'Add to cart',
+                                  )),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0),
+                                child: Consumer<DetailState>(
+                                    builder: (context, state, child) {
+                                  return DropdownButton(
+                                    value: state.quantity.toString(),
+                                    items: [
+                                      DropdownMenuItem(
+                                        child: Center(child: Text('1')),
+                                        value: '1',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Center(child: Text('2')),
+                                        value: '2',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Center(child: Text('3')),
+                                        value: '3',
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Center(child: Text('4')),
+                                        value: '4',
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      state.setQuantity(value);
+                                    },
+                                  );
+                                }),
+                              ),
+                            )
+                          ],
+                        ),
                         ProductDescription(widget._product),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,42 +116,36 @@ class _DetailScreenState extends State<DetailScreen> {
                                     fontFamily: 'Raleway', fontSize: 14),
                               ),
                             ),
-                            FutureBuilder(
-                                future: getRelatedProducts(),
-                                builder: (context, snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      // TODO: Handle this case.
-                                      break;
-                                    case ConnectionState.waiting:
-                                      return CircularProgressIndicator();
-                                    case ConnectionState.active:
-                                      // TODO: Handle this case.
-                                      break;
-                                    case ConnectionState.done:
-                                      if (snapshot.hasError)
-                                        return Center(
-                                          child: Text('${snapshot.error}'),
-                                        );
-                                      return Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                3,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot.data.length,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, pos) {
-                                              return ProductDisplayCard(
-                                                onPressed: () {},
-                                                product: snapshot.data[pos],
-                                                margin: 2,
-                                              );
-                                            }),
-                                      );
-                                  }
-                                  return Container();
-                                })
+                            Consumer<DetailState>(
+                                builder: (context, state, child) {
+                              return Container(
+                                height:
+                                    MediaQuery.of(context).size.height / 2.7,
+                                child: state.isRelatedProductsLoading
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: state.relatedProducts.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, pos) {
+                                          return ProductDisplayCard(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailScreen(state
+                                                                  .relatedProducts[
+                                                              pos])));
+                                            },
+                                            product: state.relatedProducts[pos],
+                                            margin: 2,
+                                          );
+                                        }),
+                              );
+                            })
                           ],
                         )
                       ],

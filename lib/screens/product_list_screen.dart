@@ -1,3 +1,4 @@
+import 'package:cool_store/screens/detail_screen.dart';
 import 'package:cool_store/states/product_list_state.dart';
 import 'package:cool_store/utils/constants.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
@@ -54,7 +55,6 @@ class ProductListScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-//                        background:
                       ),
                     ),
                     SliverList(
@@ -73,7 +73,13 @@ class ProductListScreen extends StatelessWidget {
                                       crossAxisSpacing: 2),
                               itemBuilder: (context, pos) {
                                 return ProductDisplayCard(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => DetailScreen(
+                                                state.products[pos])));
+                                  },
                                   product: state.products[pos],
                                 );
                               })
