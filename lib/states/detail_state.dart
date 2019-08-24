@@ -26,18 +26,21 @@ class DetailState extends ChangeNotifier {
     initProduct();
   }
 
-
   String get quantity => _quantity;
 
   initProduct() async {
     _product = await _services.getProduct(_productId);
+
     _categoryId = _product.categoryId;
     initRelatedProducts();
     isLoading = false;
     notifyListeners();
+    List<ProductVariation> variations =
+        await _services.getProductVariations(_product);
+    debugPrint(variations[0].toString());
   }
 
-  setQuantity(String value){
+  setQuantity(String value) {
     _quantity = value;
     notifyListeners();
   }

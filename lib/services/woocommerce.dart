@@ -105,7 +105,6 @@ class WooCommerce implements BaseServices {
   Future<Product> getProduct(id) async {
     try {
       var response = await wcApi.getAsync("products/$id");
-      debugPrint('$response');
       return Product.fromJson(response);
     } catch (e) {
       throw e;
