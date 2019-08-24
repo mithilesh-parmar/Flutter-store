@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 
 class Product {
   int id;
@@ -61,43 +61,6 @@ class Product {
     images = list;
     featuredImage = images[0];
   }
-
-  /// Show the product list
-//  static showList({cateId, cateName, context, List<Product> products, config}) {
-//    var categoryId = cateId ?? config['category'];
-//    var categoryName = cateName ?? config['name'];
-//    final product = Provider.of<ProductModel>(context);
-//
-//    print(products);
-//
-//    // for caching current products list
-//    if (products != null) {
-//      product.setProductsList(products);
-//      return Navigator.push(
-//          context, MaterialPageRoute(builder: (context) => ProductsPage(products, categoryId)));
-//    }
-//
-//    // for fetching beforehand
-//    product.fetchProductsByCategory(categoryId: categoryId, categoryName: categoryName);
-//    product.setProductsList(List<Product>()); //clear old products
-//    product.getProductsList(
-//      categoryId: categoryId,
-//      page: 1,
-//      lang: Provider.of<AppModel>(context).locale,
-//    );
-//
-//    Navigator.push(
-//        context, MaterialPageRoute(builder: (context) => ProductsPage(products ?? [], categoryId)));
-//
-////    if (isMagic) {
-////      Navigator.push(context,
-////          MaterialPageRoute(builder: (context) => MagicScreen(products, categoryId, imageBanner)));
-////    } else {
-////      /// if the products list is not full just go straightaway
-////      Navigator.push(
-////          context, MaterialPageRoute(builder: (context) => ProductsPage(products, categoryId)));
-////    }
-//  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -170,6 +133,11 @@ class ProductAttribute {
     return {"id": id, "name": name, "options": options};
   }
 
+  @override
+  String toString() {
+    return 'id: $id name: $name options: $options';
+  }
+
   ProductAttribute.fromLocalJson(Map<String, dynamic> json) {
     try {
       id = json['id'];
@@ -192,6 +160,12 @@ class Attribute {
     id = parsedJson["id"];
     name = parsedJson["name"];
     option = parsedJson["option"];
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'id: $id name: $name option: $option';
   }
 }
 
@@ -221,5 +195,11 @@ class ProductVariation {
       attributeList.add(Attribute.fromJson(item));
     });
     attributes = attributeList;
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return '\nid: $id  attributes: $attributes';
   }
 }

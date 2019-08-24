@@ -6,6 +6,7 @@ import 'package:cool_store/widgets/ImageView.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ProductDescription.dart';
 import 'package:cool_store/widgets/ProductTitle.dart';
+import 'package:cool_store/widgets/VariationsView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -51,21 +52,26 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Column(
                       children: <Widget>[
                         ProductTitle(widget._product),
+                        VariationsView(),
                         Row(
                           children: <Widget>[
                             Expanded(
                               flex: 4,
-                              child: FlatButton.icon(
-                                  onPressed: () {},
-                                  textColor: Colors.white,
-                                  color: Theme.of(context).accentColor,
-                                  icon: Icon(
-                                    Icons.add_shopping_cart,
-                                    color: Colors.white,
-                                  ),
-                                  label: Text(
-                                    'Add to cart',
-                                  )),
+                              child: Consumer<DetailState>(builder: (context,state,child){
+                                return FlatButton.icon(
+                                    onPressed: () {
+                                      state.addToCart();
+                                    },
+                                    textColor: Colors.white,
+                                    color: Theme.of(context).accentColor,
+                                    icon: Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                    label: Text(
+                                      'ADD TO CART',
+                                    ));
+                              }),
                             ),
                             Expanded(
                               child: Padding(

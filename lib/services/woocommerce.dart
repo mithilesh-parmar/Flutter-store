@@ -117,7 +117,6 @@ class WooCommerce implements BaseServices {
       var response =
           await wcApi.getAsync("products/${product.id}/variations?per_page=20");
       List<ProductVariation> list = [];
-      debugPrint('$response');
       for (var item in response) {
         list.add(ProductVariation.fromJson(item));
       }
