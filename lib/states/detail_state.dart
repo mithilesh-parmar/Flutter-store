@@ -2,7 +2,11 @@ import 'dart:collection';
 
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/services/base_services.dart';
+import 'package:cool_store/states/cart_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+
+enum Errors { variationNotSelected, productNotLoaded }
 
 class DetailState extends ChangeNotifier {
   bool isLoading, isRelatedProductsLoading, isVariantsLoading;
@@ -15,7 +19,9 @@ class DetailState extends ChangeNotifier {
   String _productId;
   int _categoryId;
 
+  // contains id of variation and variation itself
   Map<String, ProductVariation> testMap = HashMap();
+  // container attribute name and value
   Map<String, String> testAttributesMap = HashMap();
 
   DetailState(id) {
@@ -85,7 +91,10 @@ class DetailState extends ChangeNotifier {
     notifyListeners();
   }
 
-  addToCart() {
-    print('$_currentVariation quantity: $_quantity');
+  addToCart(context) {
+    if (_currentVariation == null) throw 'Please select variation';
+    if (_product == null) throw 'product not loaded';
+    Provider.of<CartState>(context).addProduct(
+        _product, quantity, _currentVariation, testAttributesMap.toString());
   }
 }

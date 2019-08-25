@@ -1,7 +1,6 @@
 import 'package:cool_store/models/product.dart';
-import 'package:cool_store/services/base_services.dart';
+import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/detail_state.dart';
-import 'package:cool_store/utils/constants.dart';
 import 'package:cool_store/widgets/ImageView.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ProductDescription.dart';
@@ -11,7 +10,6 @@ import 'package:cool_store/widgets/VariationsView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
 
 class DetailScreen extends StatefulWidget {
   final Product _product;
@@ -63,7 +61,12 @@ class _DetailScreenState extends State<DetailScreen> {
                                   builder: (context, state, child) {
                                 return FlatButton.icon(
                                     onPressed: () {
-                                      state.addToCart();
+                                      try {
+                                        state.addToCart(context);
+                                        _showSnackbar(context, 'ADDED TO CART');
+                                      } catch (e) {
+                                        _showSnackbar(context, e.toString());
+                                      }
                                     },
                                     textColor: Colors.white,
                                     color: Theme.of(context).accentColor,
@@ -135,5 +138,10 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
           ),
         ));
+  }
+
+  _showSnackbar(BuildContext context, String text) {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(duration: Duration(seconds: 1), content: Text(text)));
   }
 }
