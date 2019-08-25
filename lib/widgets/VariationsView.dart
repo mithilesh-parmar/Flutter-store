@@ -13,20 +13,14 @@ class VariationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DetailState state = Provider.of<DetailState>(context);
-    return
-//      state.isLoading
-//        ? Container()
-//        :
-    Column(
-
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: product.attributes.map((value) {
-              return Chooser(
-                title: value.name,
-                options: value.options,
-              );
-            }).toList());
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: product.attributes.map((value) {
+          return Chooser(
+            title: value.name,
+            options: value.options,
+          );
+        }).toList());
   }
 }

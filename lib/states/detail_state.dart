@@ -86,6 +86,6 @@ class DetailState extends ChangeNotifier {
   }
 
   addToCart() {
-    print('$_currentVariation');
+    print('$_currentVariation quantity: $_quantity');
   }
 }
