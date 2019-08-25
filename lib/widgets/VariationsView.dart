@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'Chooser.dart';
 
-// TODO build it generic
+
 class VariationsView extends StatefulWidget {
   @override
   _VariationsViewState createState() => _VariationsViewState();
@@ -18,8 +18,8 @@ class _VariationsViewState extends State<VariationsView> {
     return state.isVariantsLoading
         ? Container()
         : Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: state.product.attributes.map((value) {
               return Chooser(
                 title: value.name,

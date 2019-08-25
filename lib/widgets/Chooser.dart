@@ -1,4 +1,5 @@
 import 'package:cool_store/states/detail_state.dart';
+import 'package:cool_store/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,14 +10,14 @@ class Chooser extends StatefulWidget {
   Chooser({this.title, this.options});
 
   @override
-  _ChooserState createState() => _ChooserState(options[0]);
+  _ChooserState createState() => _ChooserState();
 }
 
 class _ChooserState extends State<Chooser> {
   int index = 0;
-  String value;
+  String value = 'select';
 
-  _ChooserState(this.value);
+  _ChooserState();
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +32,30 @@ class _ChooserState extends State<Chooser> {
         }
       },
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 4),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(widget.title),
+            Text(
+              widget.title,
+              softWrap: true,
+              overflow: TextOverflow.fade,
+              style: TextStyle(fontFamily: 'Raleway', fontSize: 16),
+            ),
             SizedBox(
               width: 10,
             ),
-            Text(value)
+            Container(
+              height: Constants.screenAwareSize(25, context),
+              width: Constants.screenAwareSize(50, context),
+              decoration: BoxDecoration(border: Border.all()),
+              child: Center(
+                  child: Text(value,
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(fontWeight: FontWeight.w600))),
+            )
           ],
         ),
       ),
