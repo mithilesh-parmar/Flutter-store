@@ -26,7 +26,6 @@ class CategoryBanner extends StatelessWidget {
             height: Constants.screenAwareSize(height, context),
             margin: EdgeInsets.all(4),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -37,12 +36,17 @@ class CategoryBanner extends StatelessWidget {
             height: Constants.screenAwareSize(height, context),
             margin: EdgeInsets.all(4),
             child: Center(
-                child: Text(
-              _category.name,
-              style: TextStyle(
-                  fontSize: Constants.screenAwareSize(40, context),
-                  fontFamily: 'Raleway',
-                  color: Colors.white),
+                child: Container(
+              padding: EdgeInsets.all(8),
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.white)),
+              child: Text(
+                _category.name,
+                style: TextStyle(
+                    fontSize: Constants.screenAwareSize(40, context),
+                    fontFamily: 'Raleway',
+                    color: Colors.white),
+              ),
             )),
           )
         ],
