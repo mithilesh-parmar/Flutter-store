@@ -6,6 +6,7 @@ import 'package:cool_store/widgets/ImageView.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ProductDescription.dart';
 import 'package:cool_store/widgets/ProductTitle.dart';
+import 'package:cool_store/widgets/QuantityChooser.dart';
 import 'package:cool_store/widgets/VariationsView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -57,7 +58,8 @@ class _DetailScreenState extends State<DetailScreen> {
                           children: <Widget>[
                             Expanded(
                               flex: 4,
-                              child: Consumer<DetailState>(builder: (context,state,child){
+                              child: Consumer<DetailState>(
+                                  builder: (context, state, child) {
                                 return FlatButton.icon(
                                     onPressed: () {
                                       state.addToCart();
@@ -74,37 +76,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               }),
                             ),
                             Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18.0),
-                                child: Consumer<DetailState>(
-                                    builder: (context, state, child) {
-                                  return DropdownButton(
-                                    value: state.quantity.toString(),
-                                    items: [
-                                      DropdownMenuItem(
-                                        child: Center(child: Text('1')),
-                                        value: '1',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Center(child: Text('2')),
-                                        value: '2',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Center(child: Text('3')),
-                                        value: '3',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Center(child: Text('4')),
-                                        value: '4',
-                                      ),
-                                    ],
-                                    onChanged: (value) {
-                                      state.setQuantity(value);
-                                    },
-                                  );
-                                }),
-                              ),
+                              child: QuantityChooser(),
                             )
                           ],
                         ),
