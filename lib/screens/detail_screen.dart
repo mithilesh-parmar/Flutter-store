@@ -42,11 +42,12 @@ class _DetailScreenState extends State<DetailScreen> {
                   centerTitle: false,
                   pinned: true,
                   floating: false,
-                  expandedHeight: Constants.screenAwareSize(330, context),
-                  flexibleSpace: FlexibleSpaceBar(background: ImageView()),
+//                  expandedHeight: Constants.screenAwareSize(330, context),
+//                  flexibleSpace: FlexibleSpaceBar(background: ImageView()),
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate([
+                  ImageView(),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 8),

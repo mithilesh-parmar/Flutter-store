@@ -22,19 +22,21 @@ class ImageView extends StatelessWidget {
       },
       child: state.isLoading
           ? Container(
+              height: Constants.screenAwareSize(300, context),
               color: Colors.grey[300],
             )
           : CarouselSlider(
-              viewportFraction: .9,
+              viewportFraction: 0.9,
               aspectRatio: 1,
               enlargeCenterPage: true,
-              height: Constants.screenAwareSize(250, context),
+              height: Constants.screenAwareSize(280, context),
               items: state.product.images.map((url) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 17),
                       decoration: BoxDecoration(
                           color: Colors.grey[300],
                           boxShadow: [
