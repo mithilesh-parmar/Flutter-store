@@ -12,17 +12,11 @@ class DetailState extends ChangeNotifier {
   Product _product;
   List<Product> relatedProducts;
   List<ProductVariation> _productVariations;
-
-  Product get product => _product;
   String _productId;
   int _categoryId;
 
-  Map<String, ProductVariation> variations;
-  Map<String, String> attributes;
-
-  List<String> attributesNames;
-
-  Map<String, String> selectedAttributes = HashMap();
+  Map<String, ProductVariation> testMap = HashMap();
+  Map<String, String> testAttributesMap = HashMap();
 
   DetailState(id) {
     this._productId = id.toString();
@@ -30,9 +24,6 @@ class DetailState extends ChangeNotifier {
     isLoading = true;
     isVariantsLoading = true;
     isRelatedProductsLoading = true;
-    variations = HashMap();
-    attributesNames = List();
-    attributes = HashMap();
     relatedProducts = List();
     _productVariations = List();
     _services = Services();
@@ -41,11 +32,10 @@ class DetailState extends ChangeNotifier {
 
   String get quantity => _quantity;
 
+  Product get product => _product;
+
   initProduct() async {
     _product = await _services.getProduct(_productId);
-    _product.attributes.forEach((value) {
-      attributesNames.add(value.name);
-    });
     _categoryId = _product.categoryId;
     isLoading = false;
     notifyListeners();
@@ -54,8 +44,12 @@ class DetailState extends ChangeNotifier {
   }
 
   changeAttributesTo(String attribute, String value) {
-    selectedAttributes.update(attribute, (_) => value, ifAbsent: () => value);
-    print('$attribute: $value');
+    testAttributesMap.update(attribute, (_) => value, ifAbsent: () => value);
+    changeProductVariation(testMap[testAttributesMap.toString()]);
+  }
+
+  void changeProductVariation(ProductVariation variation) {
+    _currentVariation = variation;
     notifyListeners();
   }
 
@@ -71,19 +65,17 @@ class DetailState extends ChangeNotifier {
   initProductVariations() async {
     _productVariations = await _services.getProductVariations(_product);
 
-    _productVariations.forEach((variant) {
-      String currentAttributes = '';
-      variations.update(variant.id.toString(), (_) => variant,
-          ifAbsent: () => variant);
-      variant.attributes.forEach((attribute) {
-        currentAttributes += '${attribute.option}';
-      });
-      if (variant.attributes.length == 0) currentAttributes = 'UNIVERSAL';
-      attributes.update(currentAttributes, (_) => variant.id.toString(),
-          ifAbsent: () => variant.id.toString());
-    });
     isVariantsLoading = false;
     notifyListeners();
+
+    _productVariations.forEach((variant) {
+      Map<String, String> map = HashMap();
+      variant.attributes.forEach((value) {
+        map.update(value.name, (_) => value.option,
+            ifAbsent: () => value.option);
+      });
+      testMap.update(map.toString(), (_) => variant, ifAbsent: () => variant);
+    });
   }
 
   List<ProductVariation> get productVariations => _productVariations;
@@ -94,16 +86,8 @@ class DetailState extends ChangeNotifier {
   }
 
   addToCart() {
-    print('${selectedAttributes}');
-
-    String attribute =
-        attributes[selectedAttributes['COLOR'] + selectedAttributes["SIZE"]];
-    print('$attribute');
-    print('${variations[attribute].price}');
-  }
-
-  void changeProductVariation(ProductVariation variation) {
-    _currentVariation = variation;
-    notifyListeners();
+    print('ADDED TO CART ------');
+    print(
+        '${_currentVariation.id} with attributes ${_currentVariation.attributes} and price ${_currentVariation.price}');
   }
 }

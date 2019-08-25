@@ -165,7 +165,13 @@ class Attribute {
   @override
   String toString() {
     // TODO: implement toString
-    return 'id: $id name: $name option: $option';
+    return 'name: $name option: $option';
+  }
+
+  @override
+  bool operator ==(other) {
+    // TODO: implement ==
+    return option == (other.option) && name == (other.name);
   }
 }
 
@@ -198,8 +204,23 @@ class ProductVariation {
   }
 
   @override
+
+  bool operator ==(other) {
+    if (attributes.length != other.attributes) return false;
+    for (int i = 0; i < attributes.length; i++) {
+      Attribute currentAttribute = attributes[i];
+      Attribute otherAttribute = other.attributes[i];
+      if (currentAttribute.name != otherAttribute.name ||
+          currentAttribute.option != otherAttribute.option) return false;
+    }
+    print('matched');
+    return true;
+  }
+
+
+  @override
   String toString() {
     // TODO: implement toString
-    return '\nid: $id  attributes: $attributes';
+    return '$id ';
   }
 }

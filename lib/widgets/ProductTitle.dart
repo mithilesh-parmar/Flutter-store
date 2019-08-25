@@ -1,5 +1,7 @@
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/states/detail_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProductTitle extends StatelessWidget {
@@ -10,6 +12,8 @@ class ProductTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    final DetailState state = Provider.of<DetailState>(context);
+    ProductVariation variation = state.currentVariation;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -30,7 +34,8 @@ class ProductTitle extends StatelessWidget {
 //                    .headline
 //                    .copyWith(fontSize: 17, color: theme.accentColor)),
             Text(
-              product.price,
+//              product.price,
+              variation == null ? product.price : variation.price,
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -39,7 +44,9 @@ class ProductTitle extends StatelessWidget {
               SizedBox(width: 5),
             if (product.onSale)
               Text(
-                product.regularPrice,
+                variation == null
+                    ? product.regularPrice
+                    : variation.regularPrice,
                 style: TextStyle(fontSize: 16),
               ),
 //              Text(Tools.getCurrecyFormatted(regularPrice),
