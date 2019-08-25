@@ -15,7 +15,7 @@ class Chooser extends StatefulWidget {
 
 class _ChooserState extends State<Chooser> {
   int index = 0;
-  String value = 'select';
+  String value = 'SELECT';
 
   _ChooserState();
 
@@ -24,7 +24,8 @@ class _ChooserState extends State<Chooser> {
     final DetailState state = Provider.of<DetailState>(context);
     return GestureDetector(
       onTap: () async {
-        var result = await _showOptions(widget.options);
+        if (state.isVariantsLoading) return;
+        var result = await _showOptions(widget.options, state);
         if (result != null) {
           value = result;
           state.changeAttributesTo(widget.title, value);
@@ -37,11 +38,18 @@ class _ChooserState extends State<Chooser> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              widget.title,
-              softWrap: true,
-              overflow: TextOverflow.fade,
-              style: TextStyle(fontFamily: 'Raleway', fontSize: 16),
+            Container(
+              width: Constants.screenAwareSize(50, context),
+              height: Constants.screenAwareSize(25, context),
+              child: Center(
+                child: Text(
+                  widget.title,
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(fontFamily: 'Raleway', fontSize: 16),
+                ),
+              ),
             ),
             SizedBox(
               width: 10,
@@ -49,12 +57,19 @@ class _ChooserState extends State<Chooser> {
             Container(
               height: Constants.screenAwareSize(25, context),
               width: Constants.screenAwareSize(50, context),
-              decoration: BoxDecoration(border: Border.all()),
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.grey[600])),
               child: Center(
                   child: Text(value,
                       softWrap: true,
                       overflow: TextOverflow.fade,
-                      style: TextStyle(fontWeight: FontWeight.w600))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          decorationColor:
+                              Theme.of(context).textTheme.title.color,
+                          decoration: state.isVariantsLoading
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none))),
             )
           ],
         ),
@@ -62,7 +77,7 @@ class _ChooserState extends State<Chooser> {
     );
   }
 
-  _showOptions(List options) {
+  _showOptions(List options, DetailState state) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {

@@ -86,8 +86,6 @@ class DetailState extends ChangeNotifier {
   }
 
   addToCart() {
-    print('ADDED TO CART ------');
-    print(
-        '${_currentVariation.id} with attributes ${_currentVariation.attributes} and price ${_currentVariation.price}');
+    print('$_currentVariation');
   }
 }

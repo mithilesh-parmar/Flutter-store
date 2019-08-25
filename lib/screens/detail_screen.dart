@@ -52,7 +52,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Column(
                       children: <Widget>[
                         ProductTitle(widget._product),
-                        VariationsView(),
+                        VariationsView(widget._product),
                         Row(
                           children: <Widget>[
                             Expanded(
