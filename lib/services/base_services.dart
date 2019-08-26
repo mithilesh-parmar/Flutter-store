@@ -293,4 +293,8 @@ class Services implements BaseServices {
       throw Exception("No internet connection");
     }
   }
+
+  void dispose(){
+//    serviceApi.dispose();
+  }
 }

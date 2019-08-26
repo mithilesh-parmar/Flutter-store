@@ -49,6 +49,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
    - category_image_default.jpg
+   - empty_cart.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

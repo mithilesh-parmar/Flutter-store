@@ -144,6 +144,7 @@ class WooCommerceAPI {
     var url = this._getOAuthURL("GET", endPoint);
 
     final response = await http.get(url);
+
     return json.decode(response.body);
   }
 
@@ -176,4 +177,6 @@ class WooCommerceAPI {
     var dataResponse = await json.decode(response);
     return dataResponse;
   }
+
+  void dispose() {}
 }

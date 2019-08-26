@@ -227,6 +227,11 @@ class WooCommerce implements BaseServices {
     return null;
   }
 
+
+  void dispose(){
+    wcApi.dispose();
+  }
+
   /// Get Nonce for Any Action
 //  Future getNonce({method = 'register'}) async {
 //    try {

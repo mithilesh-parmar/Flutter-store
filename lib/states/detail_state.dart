@@ -106,6 +106,6 @@ class DetailState extends ChangeNotifier {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    //TODO dispose connection
+    _services.dispose();
   }
 }
