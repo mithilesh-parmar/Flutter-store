@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            expandedHeight: Constants.screenAwareSize(260, context),
+            expandedHeight: Constants.screenAwareSize(300, context),
             flexibleSpace: FlexibleSpaceBar(
                 background: Container(
               child: Column(
@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Raleway',
-                          fontSize: 25),
+                          fontSize: 40),
                     ),
                   ),
                   Container(

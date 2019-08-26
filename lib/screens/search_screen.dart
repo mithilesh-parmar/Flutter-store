@@ -24,29 +24,54 @@ class SearchScreen extends StatelessWidget {
                 onTap: () {
                   showSearch(context: context, delegate: DataSearch(state));
                 },
-                child: Container(
-                  height: Constants.screenAwareSize(40, context),
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    children: <Widget>[
-                      Align(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('Search'),
-                        ),
-                        alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        'Search',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Raleway',
+                            fontSize: 40),
                       ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Icon(Icons.search),
-                      )
-                    ],
-                  ),
-                  margin: EdgeInsets.only(left: 18, right: 18),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                  ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 17, vertical: 8),
+                    ),
+                    Container(
+                      height: Constants.screenAwareSize(40, context),
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: <Widget>[
+                          Align(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                'SEARCH FOR BRAND, PRODUCTS, CATEGORY',
+                                style: TextStyle(
+                                    fontFamily: 'Raleway',
+                                    fontWeight: FontWeight.w200,
+                                    fontSize: 12),
+                              ),
+                            ),
+                            alignment: Alignment.centerLeft,
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Icon(Icons.search),
+                          )
+                        ],
+                      ),
+                      margin: EdgeInsets.only(left: 18, right: 18),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

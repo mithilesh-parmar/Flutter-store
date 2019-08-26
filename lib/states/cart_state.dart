@@ -23,10 +23,24 @@ class CartState extends ChangeNotifier {
       String variationsSelected) {
     _productsWithQuantity.update(product, (_) => quantity,
         ifAbsent: () => quantity);
-
     attributes.add(variationsSelected.replaceAll("[\\p{Ps}\\p{Pe}]", " "));
     products.add(product);
     quantities.add(quantity);
     notifyListeners();
+  }
+
+  removeProduct(int index) {
+    Product product = products[index];
+    print('removing product at $index wichi is $product');
+    products.removeAt(index);
+    _productsWithQuantity.remove(product);
+    attributes.removeAt(index);
+    quantities.removeAt(index);
+    notifyListeners();
+    print('${products.length}');
+  }
+
+  addToWishList(int index) {
+    removeProduct(index);
   }
 }
