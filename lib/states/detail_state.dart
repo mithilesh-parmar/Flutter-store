@@ -21,6 +21,7 @@ class DetailState extends ChangeNotifier {
 
   // contains id of variation and variation itself
   Map<String, ProductVariation> testMap = HashMap();
+
   // container attribute name and value
   Map<String, String> testAttributesMap = HashMap();
 
@@ -95,6 +96,16 @@ class DetailState extends ChangeNotifier {
     if (_currentVariation == null) throw 'Please select variation';
     if (_product == null) throw 'product not loaded';
     Provider.of<CartState>(context).addProduct(
-        _product, quantity, _currentVariation, testAttributesMap.toString());
+      _product,
+      quantity,
+      _currentVariation,
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    //TODO dispose connection
   }
 }

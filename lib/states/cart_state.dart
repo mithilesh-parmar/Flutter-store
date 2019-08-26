@@ -7,9 +7,20 @@ class CartState extends ChangeNotifier {
   // product and quantities
   Map<Product, String> _productsWithQuantity;
 
+  // products list in cart
   List<Product> products;
+
+  // quantities of products in cart
   List<String> quantities;
+
+  //attributes of products in cart
   List<String> attributes;
+
+  double totalCartAmount = 0;
+
+  //TODO update according to shipping methods
+  double totalCartExtraCharge = 200;
+  double totalCartPayableAmount = 0;
 
   CartState() {
     _productsWithQuantity = HashMap();
@@ -18,14 +29,23 @@ class CartState extends ChangeNotifier {
     products = _productsWithQuantity.keys.toList(growable: true);
   }
 
-  // TODO add products from detail screen to cart screen
-  addProduct(Product product, String quantity, ProductVariation variation,
-      String variationsSelected) {
+  addProduct(
+    Product product,
+    String quantity,
+    ProductVariation variation,
+  ) {
     _productsWithQuantity.update(product, (_) => quantity,
         ifAbsent: () => quantity);
-    attributes.add(variationsSelected.replaceAll("[\\p{Ps}\\p{Pe}]", " "));
+    String attributeSelected = '';
+    variation.attributes.forEach((attribute) {
+      attributeSelected += '${attribute.name}: ${attribute.option}\t';
+    });
+    attributes.add(attributeSelected);
     products.add(product);
     quantities.add(quantity);
+    totalCartAmount += double.parse(variation.regularPrice);
+
+    updateTotalPayableAmount();
     notifyListeners();
   }
 
@@ -43,4 +63,7 @@ class CartState extends ChangeNotifier {
   addToWishList(int index) {
     removeProduct(index);
   }
+
+  updateTotalPayableAmount() =>
+      totalCartPayableAmount = totalCartAmount + totalCartExtraCharge;
 }
