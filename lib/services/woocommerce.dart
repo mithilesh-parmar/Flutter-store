@@ -1,7 +1,11 @@
 import 'package:cool_store/models/category.dart';
+import 'package:cool_store/models/order.dart';
+import 'package:cool_store/models/payment.dart';
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/models/user.dart';
 import 'package:cool_store/services/base_services.dart';
 import 'package:cool_store/services/woocommerce_api.dart';
+import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -82,6 +86,22 @@ class WooCommerce implements BaseServices {
 //      return Coupons.getListCoupons(response);
     } catch (e) {
       throw e;
+    }
+  }
+
+  Future createOrder(
+      Map<String, int> productsInCart,
+      Map<String, ProductVariation> productVariationsInCart,
+      Address address,
+      PaymentMethod paymentMethod,
+      userId) async {
+    try {
+      var params = Order().toJson(productsInCart, productVariationsInCart,
+          address, paymentMethod, userId);
+      var response = await wcApi.postAsync('orders', params);
+      print('$response');
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -227,8 +247,7 @@ class WooCommerce implements BaseServices {
     return null;
   }
 
-
-  void dispose(){
+  void dispose() {
     wcApi.dispose();
   }
 

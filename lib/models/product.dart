@@ -196,4 +196,14 @@ class ProductVariation {
     });
     attributes = attributeList;
   }
+
+  @override
+  String toString() {
+    String value = '';
+    attributes.forEach((attribute) {
+      value += '${attribute.name}: ${attribute.option},  ';
+    });
+    value = value.substring(0, value.length - 3);
+    return value;
+  }
 }

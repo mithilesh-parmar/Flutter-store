@@ -1,7 +1,10 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:cool_store/models/category.dart';
+import 'package:cool_store/models/payment.dart';
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/models/user.dart';
 import 'package:cool_store/services/woocommerce.dart';
+import 'package:cool_store/states/cart_state.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class BaseServices {
@@ -87,6 +90,13 @@ abstract class BaseServices {
   Future<dynamic> getProduct(id);
 
   Future<dynamic> getCoupons();
+
+  Future createOrder(
+      Map<String, int> productsInCart,
+      Map<String, ProductVariation> productVariationsInCart,
+      Address address,
+      PaymentMethod paymentMethod,
+      userId) {}
 }
 
 class Services implements BaseServices {
@@ -113,7 +123,21 @@ class Services implements BaseServices {
     }
   }
 
-
+  Future createOrder(
+      Map<String, int> productsInCart,
+      Map<String, ProductVariation> productVariationsInCart,
+      Address address,
+      PaymentMethod paymentMethod,
+      [userId = 1]) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return serviceApi.createOrder(productsInCart, productVariationsInCart,
+          address, paymentMethod, userId);
+    } else {
+      throw Exception("No internet connection");
+    }
+  }
 
   @override
   Future<List<Product>> fetchProductsByCategory(
@@ -296,7 +320,7 @@ class Services implements BaseServices {
     }
   }
 
-  void dispose(){
+  void dispose() {
 //    serviceApi.dispose();
   }
 }

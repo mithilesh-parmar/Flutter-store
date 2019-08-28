@@ -117,6 +117,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
+                                                      fullscreenDialog: true,
                                                       builder: (context) =>
                                                           DetailScreen(state
                                                                   .relatedProducts[

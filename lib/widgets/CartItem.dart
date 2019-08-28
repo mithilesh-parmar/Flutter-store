@@ -28,7 +28,7 @@ class CartItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('${variation.attributes.toString()}'),
+              Text('$variation'),
               Text('Qty: $quantity')
             ],
           ),

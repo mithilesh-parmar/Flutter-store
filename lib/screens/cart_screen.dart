@@ -1,6 +1,8 @@
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/screens/checkout_screen.dart';
 import 'package:cool_store/screens/detail_screen.dart';
 import 'package:cool_store/states/cart_state.dart';
+import 'package:cool_store/states/checkout_state.dart';
 import 'package:cool_store/utils/constants.dart';
 import 'package:cool_store/widgets/CartItem.dart';
 import 'package:flutter/material.dart';
@@ -49,12 +51,21 @@ class CartScreen extends StatelessWidget {
                               state.products.values.elementAt(pos);
                           return CartItem(
                             product: product,
-                            quantity: state.productsInCart[product.id.toString()],
-                            variation:
-                                state.productVariationsInCart[product.id.toString()],
-                            onRemovePressed: () {},
-                            onWishlistPressed: () {},
-                            onTap: () {},
+                            quantity:
+                                state.productsInCart[product.id.toString()],
+                            variation: state
+                                .productVariationsInCart[product.id.toString()],
+                            onRemovePressed: () {
+                              state.removeProduct(product.id);
+                            },
+                            onWishlistPressed: () {
+                              state.addToWishList(product.id);
+                            },
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => DetailScreen(product),
+                                  fullscreenDialog: true));
+                            },
                           );
                         }),
                     Container(
@@ -73,7 +84,21 @@ class CartScreen extends StatelessWidget {
                             trailing: Text('${state.totalCartPayableAmount}'),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangeNotifierProvider<CheckoutState>(
+                                              builder: (_) => CheckoutState(),
+                                              child: Checkout(
+                                                productsInCart:
+                                                    state.productsInCart,
+                                                productVariationsInCart: state
+                                                    .productVariationsInCart,
+                                              )),
+                                      fullscreenDialog: true));
+                            },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               height: Constants.screenAwareSize(40, context),

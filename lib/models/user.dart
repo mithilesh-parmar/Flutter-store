@@ -17,7 +17,7 @@ class Address {
         this.city,
         this.state,
         this.country,
-        this.phoneNumber});
+        this.phoneNumber,this.zipCode});
 
   Address.fromJson(Map<String, dynamic> parsedJson) {
     firstName = parsedJson["first_name"];

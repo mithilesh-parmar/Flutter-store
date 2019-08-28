@@ -78,7 +78,8 @@ class ProductListScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (_) => DetailScreen(
-                                                state.products[pos])));
+                                                state.products[pos]),
+                                            fullscreenDialog: true));
                                   },
                                   product: state.products[pos],
                                 );
