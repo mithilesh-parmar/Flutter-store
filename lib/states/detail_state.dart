@@ -95,11 +95,13 @@ class DetailState extends ChangeNotifier {
   addToCart(context) {
     if (_currentVariation == null) throw 'Please select variation';
     if (_product == null) throw 'product not loaded';
-    Provider.of<CartState>(context).addProduct(
-      _product,
-      quantity,
-      _currentVariation,
-    );
+//    Provider.of<CartState>(context).addProduct(
+//      _product,
+//      quantity,
+//      _currentVariation,
+//    );
+    Provider.of<CartState>(context)
+        .addProductToCart(_product, _currentVariation, int.parse(quantity));
   }
 
   @override
