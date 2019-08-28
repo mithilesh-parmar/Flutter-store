@@ -35,6 +35,8 @@ class CartState extends ChangeNotifier {
   Address address;
   PaymentMethod paymentMethod;
 
+  String couponCode;
+
   CartState() {
     _products = HashMap();
     _productsInCart = HashMap();
@@ -72,6 +74,10 @@ class CartState extends ChangeNotifier {
 
     notifyListeners();
     print('${products.length}');
+  }
+
+  setCouponCode(String value) {
+    couponCode = value;
   }
 
   addToWishList(int productId) {

@@ -1,11 +1,11 @@
 import 'package:cool_store/models/payment.dart';
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/models/user.dart';
-import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/checkout_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// Todo add layout for address input and search for shipping
 class Checkout extends StatelessWidget {
   Map<String, int> productsInCart;
   Map<String, ProductVariation> productVariationsInCart;

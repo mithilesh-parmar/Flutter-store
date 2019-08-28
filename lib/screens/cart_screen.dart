@@ -8,6 +8,7 @@ import 'package:cool_store/widgets/CartItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// TODO change total
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -70,18 +71,64 @@ class CartScreen extends StatelessWidget {
                         }),
                     Container(
                       child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          ListTile(
-                            leading: Text('Total'),
-                            trailing: Text('${state.totalCartAmount}'),
+                          // coupon view
+
+                          Container(
+                            height: Constants.screenAwareSize(35, context),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey[600])),
+                            margin: EdgeInsets.symmetric(horizontal: 12),
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: TextField(
+                                    onChanged: (value) {
+//                                      state.setCouponCode(value);
+                                    },
+                                    onSubmitted: (value) {
+                                      // TODO check for code
+                                      state.setCouponCode(value);
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: 'Coupon Code',
+                                        hintStyle: TextStyle(
+                                            fontFamily: 'Raleway',
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .subhead
+                                                .color),
+                                        focusedBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        focusedErrorBorder: InputBorder.none),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: FlatButton.icon(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.local_offer),
+                                      label: Text('Apply')),
+                                )
+                              ],
+                            ),
                           ),
-                          ListTile(
-                            leading: Text('Charges'),
-                            trailing: Text('${state.totalCartExtraCharge}'),
-                          ),
-                          ListTile(
-                            leading: Text('Payable'),
-                            trailing: Text('${state.totalCartPayableAmount}'),
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 18.0),
+                            child: ListTile(
+                              leading: Text('Total'),
+                              trailing: Text('${state.totalCartAmount}'),
+                            ),
                           ),
                           GestureDetector(
                             onTap: () {
