@@ -1,11 +1,11 @@
 import 'package:cool_store/screens/cart_screen.dart';
 import 'package:cool_store/screens/home_screen.dart';
-import 'package:cool_store/screens/search_screen.dart';
+import 'package:cool_store/screens/category_screen.dart';
 import 'package:cool_store/screens/setting_screen.dart';
 import 'package:cool_store/states/app_state.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/home_state.dart';
-import 'package:cool_store/states/search_state.dart';
+import 'package:cool_store/states/category_state.dart';
 import 'package:cool_store/states/settings_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +18,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(
           builder: (_) => AppState(initialScreen: HomeScreen(), screens: [
             HomeScreen(),
-            SearchScreen(),
+            CategoryScreen(),
             CartScreen(),
             SettingScreen()
           ]),
@@ -30,7 +30,7 @@ class App extends StatelessWidget {
           builder: (_) => CartState(),
         ),
         ChangeNotifierProvider(
-          builder: (_) => SearchState(),
+          builder: (_) => CategoryState(),
         ),
         ChangeNotifierProvider(
           builder: (_) => SettingState(),

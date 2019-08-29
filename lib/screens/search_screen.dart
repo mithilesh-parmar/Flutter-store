@@ -1,149 +1,101 @@
-import 'package:cool_store/screens/product_list_screen.dart';
-import 'package:cool_store/states/product_list_state.dart';
+import 'package:cool_store/screens/detail_screen.dart';
 import 'package:cool_store/states/search_state.dart';
 import 'package:cool_store/utils/constants.dart';
-import 'package:cool_store/widgets/ShimmerList.dart';
-import 'package:cool_store/widgets/category_banner.dart';
+import 'package:cool_store/widgets/ProductCard.dart';
+import 'package:cool_store/widgets/ShimmerGrid.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    final SearchState state = Provider.of<SearchState>(context);
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            centerTitle: false,
-            bottom: PreferredSize(
-              preferredSize: Size(100, 100),
-              child: GestureDetector(
-                onTap: () {
-                  showSearch(context: context, delegate: DataSearch(state));
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        'Search',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Raleway',
-                            fontSize: 40),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 17, vertical: 8),
-                    ),
-                    Container(
-                      height: Constants.screenAwareSize(40, context),
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        children: <Widget>[
-                          Align(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                'SEARCH FOR BRAND, PRODUCTS, CATEGORY',
-                                style: TextStyle(
-                                    fontFamily: 'Raleway',
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 12),
-                              ),
-                            ),
-                            alignment: Alignment.centerLeft,
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Icon(Icons.search),
-                          )
-                        ],
-                      ),
-                      margin: EdgeInsets.only(left: 18, right: 18),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SliverList(
-              delegate: SliverChildListDelegate([
-            state.isLoading
-                ? ShimmerList()
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: state.categories.length,
-                    itemBuilder: (context, pos) {
-                      return CategoryBanner(state.categories[pos], () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return ProductListScreen(
-                              state.categories[pos].id,
-                              state.categories[pos].image,
-                              state.categories[pos].name);
-                        }));
-                      });
-                    })
-          ]))
-        ],
-      ),
-    );
-  }
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class DataSearch extends SearchDelegate {
-  final SearchState state;
-
-  DataSearch(this.state);
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
 
   @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      )
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, '');
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return state.isSearchResultLoading
-        ? ShimmerList()
-        : ListView.builder(
-            itemCount: state.searchResult.length,
-            itemBuilder: (context, pos) => ListTile(
-                  title: Text('${state.searchResult[pos].name}'),
-                ));
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return ListTile(
-      title: Text('Type more than 3 letters'),
-    );
+  Widget build(BuildContext context) {
+    final state = Provider.of<SearchState>(context);
+    return Scaffold(
+        appBar: AppBar(),
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                Container(
+                  margin: EdgeInsets.all(8),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey[600])),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          child: TextField(
+                        controller: _searchController,
+                        onChanged: (value) {
+                          state.clearResult();
+                        },
+                        onSubmitted: (value) {
+                          state.setKeyword(value);
+                        },
+                        decoration: InputDecoration(
+                            focusedErrorBorder: InputBorder.none,
+                            hintText: 'Search for products',
+                            errorBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none),
+                      )),
+                      IconButton(
+                          icon: Icon(Icons.clear_all),
+                          onPressed: () {
+                            state.clearResult();
+                            _searchController.clear();
+                          })
+                    ],
+                  ),
+                ),
+                state.showKeywords
+                    ? ListView.separated(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.keyWords.length,
+                        itemBuilder: (context, pos) {
+                          return ListTile(
+                            title: Text('${state.keyWords[pos]}'),
+                            leading: Icon(Icons.search),
+                            trailing: Icon(Icons.chevron_right),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(),
+                      )
+                    : state.isResultLoading
+                        ? ShimmerGrid()
+                        : GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 2,
+                                    crossAxisSpacing: 2,
+                                    childAspectRatio: .6),
+                            itemCount: state.searchResult.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, pos) {
+                              return ProductDisplayCard(
+                                onPressed: () {},
+                                product: state.searchResult[pos],
+                              );
+                            })
+              ]))
+            ],
+          ),
+        ));
   }
 }

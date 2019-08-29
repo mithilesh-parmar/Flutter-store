@@ -16,6 +16,9 @@ class Constants {
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Colors.black;
 
+  static String searchBarTag = 'searchbartag';
+  static String searchSubtitleTag = 'searchSubtitleTag';
+  static String searchIconTag = 'searchIconTag';
   static double baseHeight = 640;
 
   static double screenAwareSize(double size, BuildContext context) {

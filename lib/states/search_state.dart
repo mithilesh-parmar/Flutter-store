@@ -1,48 +1,39 @@
-import 'package:cool_store/models/category.dart' as Product;
+import 'package:cool_store/models/product.dart';
 import 'package:cool_store/services/base_services.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cool_store/models/product.dart' as Woocommerce;
 
 class SearchState extends ChangeNotifier {
-  Services _services;
-  bool isLoading;
-  bool isSearchResultLoading;
-  Map<int, Product.Category> _categoryList;
-  String errorMessage;
-  List<Product.Category> categories;
-  List<Woocommerce.Product> _searchResult;
+  bool isResultLoading = true;
+  bool showKeywords = true;
 
-  SearchState() {
-    isLoading = true;
-    isSearchResultLoading = true;
-    categories = List();
-    _categoryList = {};
-    _services = Services();
-    initCategories();
+  String searchKeyword;
+  List<String> keyWords = List();
+  List<Product> searchResult = List();
+  int currentPage = 1;
+  Services _services = Services();
+
+  setKeyword(String value) {
+    isResultLoading = true;
+    showKeywords = false;
+    searchKeyword = value;
+    keyWords.add(value);
+    performSearch();
   }
 
-
-  List<Woocommerce.Product> get searchResult => _searchResult;
-
-  performSearch(String query) async {
-    _searchResult = List();
-    _searchResult = await _services.searchProducts(name: query,page: 1);
-    isSearchResultLoading = false;
+  performSearch() async {
+    searchResult =
+        await _services.searchProducts(name: searchKeyword, page: currentPage);
+    isResultLoading = false;
     notifyListeners();
   }
 
-  initCategories() async {
-    try {
-      categories = await _services.getCategories();
-      isLoading = false;
-      for (var cat in categories) {
-        _categoryList[cat.id] = cat;
-      }
-      notifyListeners();
-    } catch (err) {
-      isLoading = false;
-      errorMessage = err.toString();
-      notifyListeners();
-    }
+  addKeywordToStorage() {
+    //TODO add keyword to localstorage
+  }
+
+  clearResult() {
+    showKeywords = true;
+    searchResult.clear();
+    notifyListeners();
   }
 }
