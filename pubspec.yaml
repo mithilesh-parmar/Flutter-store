@@ -29,6 +29,9 @@ dependencies:
   smooth_star_rating: 1.0.3
   flutter_widget_from_html_core: ^0.2.2+1
   configurable_expansion_tile: ^1.0.0
+  localstorage: ^2.0.0
+  shared_preferences: ^0.5.3+4
+  extended_image: ^0.5.6
 
 dev_dependencies:
   flutter_test:

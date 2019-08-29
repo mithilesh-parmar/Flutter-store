@@ -1,6 +1,8 @@
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/services/base_services.dart';
+import 'package:cool_store/utils/constants.dart';
 import 'package:flutter/foundation.dart';
+import 'package:localstorage/localstorage.dart';
 
 class HomeState extends ChangeNotifier {
   Services _services;
@@ -15,9 +17,51 @@ class HomeState extends ChangeNotifier {
   }
 
   getProducts() async {
+    try {
+      products = await _services.getProducts();
+      isLoading = false;
+      notifyListeners();
+      cacheProducts();
+    } catch (e) {
+      loadProductsFromCache();
+    }
+  }
+
+  // cached products to local storage
+  cacheProducts() async {
+    final LocalStorage _localStorage = LocalStorage(
+      Constants.APP_FOLDER,
+    );
+
+    try {
+      final ready = await _localStorage.ready;
+      if (ready) {
+        await _localStorage.setItem(Constants.kLocalKey["home"], products);
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // called if there is a connection problem to load last cached products from local storage
+  loadProductsFromCache() async {
     isLoading = true;
-    notifyListeners();
-    products = await _services.getProducts();
+    final LocalStorage storage = new LocalStorage(Constants.APP_FOLDER);
+    try {
+      final ready = await storage.ready;
+      if (ready) {
+        final json = storage.getItem(Constants.kLocalKey["home"]);
+        if (json != null) {
+          List<Product> list = [];
+          for (var item in json) {
+            list.add(Product.fromLocalJson(item));
+          }
+          products = list;
+        }
+      }
+    } catch (err) {
+      print(err);
+    }
     isLoading = false;
     notifyListeners();
   }

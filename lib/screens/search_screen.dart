@@ -1,6 +1,4 @@
-import 'package:cool_store/screens/detail_screen.dart';
 import 'package:cool_store/states/search_state.dart';
-import 'package:cool_store/utils/constants.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ShimmerGrid.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,14 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final state = Provider.of<SearchState>(context);
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () async {
+                state.addKeywordsToStorage();
+                Navigator.of(context).pop();
+              }),
+        ),
         body: SafeArea(
           child: CustomScrollView(
             slivers: <Widget>[
@@ -44,12 +49,13 @@ class _SearchScreenState extends State<SearchScreen> {
                           state.setKeyword(value);
                         },
                         decoration: InputDecoration(
-                            focusedErrorBorder: InputBorder.none,
-                            hintText: 'Search for products',
-                            errorBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none),
+                          focusedErrorBorder: InputBorder.none,
+                          hintText: 'Search for products',
+                          errorBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
                       )),
                       IconButton(
                           icon: Icon(Icons.clear_all),
@@ -67,6 +73,13 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemCount: state.keyWords.length,
                         itemBuilder: (context, pos) {
                           return ListTile(
+                            onTap: () {
+                              _searchController.text = state.keyWords[pos];
+                              state.setKeyword(state.keyWords[pos]);
+                            },
+                            onLongPress: () {
+                              state.removeKeyword(state.keyWords[pos]);
+                            },
                             title: Text('${state.keyWords[pos]}'),
                             leading: Icon(Icons.search),
                             trailing: Icon(Icons.chevron_right),

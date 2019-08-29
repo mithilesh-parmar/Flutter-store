@@ -1,5 +1,6 @@
 import 'package:cool_store/models/category.dart';
 import 'package:cool_store/utils/constants.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class CategoryBanner extends StatelessWidget {
@@ -20,7 +21,9 @@ class CategoryBanner extends StatelessWidget {
             margin: EdgeInsets.all(4),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    fit: BoxFit.cover, image: NetworkImage(_category.image))),
+                    fit: BoxFit.cover,
+                    image: ExtendedNetworkImageProvider(_category.image,
+                        cache: true))),
           ),
           Container(
             height: Constants.screenAwareSize(height, context),

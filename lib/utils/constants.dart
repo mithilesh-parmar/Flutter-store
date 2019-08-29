@@ -8,6 +8,17 @@ class Constants {
 
   static final URL_CLOUD = 'https://mastigophoran-miner.000webhostapp.com';
 
+  static final APP_FOLDER = 'COOL_STORE';
+
+  // keys for localstorage
+  static final kLocalKey = {
+    "userInfo": "userInfo",
+    "shippingAddress": "shippingAddress",
+    "recentSearches": "recentSearches",
+    "wishlist": "wishlist",
+    "home": "home"
+  };
+
   //Colors for theme
   static Color lightPrimary = Color(0xfffcfcff);
   static Color darkPrimary = Colors.black;
@@ -22,7 +33,10 @@ class Constants {
   static double baseHeight = 640;
 
   static double screenAwareSize(double size, BuildContext context) {
-    return size * MediaQuery.of(context).size.height / baseHeight;
+    return size * MediaQuery
+        .of(context)
+        .size
+        .height / baseHeight;
   }
 
   static ThemeData lightTheme = ThemeData(

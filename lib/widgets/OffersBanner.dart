@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class OffersBanner extends StatelessWidget {
@@ -27,7 +28,11 @@ class OffersBanner extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      fit: BoxFit.cover, image: NetworkImage(url))),
+                      fit: BoxFit.cover,
+                      image: ExtendedNetworkImageProvider(
+                        url,
+                        cache: true,
+                      ))),
             );
           },
         );

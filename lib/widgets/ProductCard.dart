@@ -1,5 +1,6 @@
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/utils/constants.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductDisplayCard extends StatelessWidget {
@@ -31,7 +32,9 @@ class ProductDisplayCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(product.featuredImage))),
+                        image: ExtendedNetworkImageProvider(
+                            product.featuredImage,
+                            cache: true))),
               ),
             ),
             SizedBox(

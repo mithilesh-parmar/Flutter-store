@@ -1,5 +1,6 @@
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/utils/constants.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class CartItem extends StatelessWidget {
@@ -23,14 +24,14 @@ class CartItem extends StatelessWidget {
       children: <Widget>[
         ListTile(
           onTap: onTap,
-          leading: Image.network(product.featuredImage),
+          leading: ExtendedImage.network(
+            product.featuredImage,
+            cache: true,
+          ),
           subtitle: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('$variation'),
-              Text('Qty: $quantity')
-            ],
+            children: <Widget>[Text('$variation'), Text('Qty: $quantity')],
           ),
           title: Text(
             product.name,
