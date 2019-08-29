@@ -1,6 +1,7 @@
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/screens/checkout_screen.dart';
 import 'package:cool_store/screens/detail_screen.dart';
+import 'package:cool_store/screens/wishlist_screen.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/checkout_state.dart';
 import 'package:cool_store/utils/constants.dart';
@@ -19,12 +20,24 @@ class CartScreen extends StatelessWidget {
         SliverList(
             delegate: SliverChildListDelegate([
           Container(
-            child: Text(
-              'Cart',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Raleway',
-                  fontSize: 40),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  'Cart',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Raleway',
+                      fontSize: 40),
+                ),
+                Spacer(),
+                IconButton(
+                    icon: Icon(Icons.card_travel),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => WishListScreen(),
+                          fullscreenDialog: true));
+                    })
+              ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 17, vertical: 8),
           ),
@@ -50,17 +63,18 @@ class CartScreen extends StatelessWidget {
                         itemBuilder: (context, pos) {
                           Product product =
                               state.products.values.elementAt(pos);
+                          ProductVariation variation = state
+                              .productVariationsInCart[product.id.toString()];
                           return CartItem(
                             product: product,
                             quantity:
                                 state.productsInCart[product.id.toString()],
-                            variation: state
-                                .productVariationsInCart[product.id.toString()],
-                            onRemovePressed: () {
-                              state.removeProduct(product.id);
+                            variation: variation,
+                            onPrimaryButtonPressed: () {
+                              state.addProductToWishList(product, variation);
                             },
-                            onWishlistPressed: () {
-                              state.addToWishList(product.id);
+                            onSecondaryButtonPressed: () {
+                              state.removeProduct(product.id);
                             },
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(

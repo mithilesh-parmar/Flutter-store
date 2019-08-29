@@ -58,12 +58,23 @@ class CartState extends ChangeNotifier {
 
   Map<int, Product> get products => _products; //  addProduct(
 
+  Map<Product, ProductVariation> _wishListProducts = HashMap();
+
+  Map<Product, ProductVariation> get wishListProducts => _wishListProducts;
+
   addProductToCart(Product product, ProductVariation variation, int quantity) {
     _productsInCart.update(product.id.toString(), (_) => quantity,
         ifAbsent: () => quantity);
     _products.update(product.id, (_) => product, ifAbsent: () => product);
     _productVariationsInCart.update(product.id.toString(), (_) => variation,
         ifAbsent: () => variation);
+    notifyListeners();
+  }
+
+  addProductToWishList(Product product, ProductVariation variation) {
+    _wishListProducts.update(product, (_) => variation,
+        ifAbsent: () => variation);
+    removeProduct(product.id);
     notifyListeners();
   }
 
@@ -80,9 +91,7 @@ class CartState extends ChangeNotifier {
     couponCode = value;
   }
 
-  addToWishList(int productId) {
-    removeProduct(productId);
-  }
+
 
   updateTotalPayableAmount() =>
       totalCartPayableAmount = totalCartAmount + totalCartExtraCharge;
