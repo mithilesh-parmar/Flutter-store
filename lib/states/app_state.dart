@@ -1,6 +1,8 @@
 import 'package:cool_store/utils/constants.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppState extends ChangeNotifier {
   ThemeData _themeData = Constants.lightTheme;
@@ -12,6 +14,7 @@ class AppState extends ChangeNotifier {
   AppState({@required initialScreen, @required screens}) {
     _selectedScreen = initialScreen;
     _screens = screens;
+    _reteriveThemePreference();
   }
 
   Widget get selectedScreen => _selectedScreen;
@@ -21,6 +24,7 @@ class AppState extends ChangeNotifier {
   _setTheme(ThemeData themeData) {
     _themeData = themeData;
     notifyListeners();
+    _saveThemePreference();
   }
 
   int get selectedScreenIndex => _selectedScreenIndex;
@@ -45,5 +49,18 @@ class AppState extends ChangeNotifier {
   setLightTheme() {
     isDark = false;
     _setTheme(Constants.lightTheme);
+  }
+
+  _saveThemePreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool(Constants.kLocalKey['isDarkTheme'], isDark);
+  }
+
+  _reteriveThemePreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.containsKey(Constants.kLocalKey['isDarkTheme'])) {
+      isDark = preferences.getBool(Constants.kLocalKey['isDarkTheme']);
+      isDark ? setDarkTheme() : setLightTheme();
+    }
   }
 }

@@ -16,7 +16,8 @@ class Constants {
     "shippingAddress": "shippingAddress",
     "recentSearches": "recentSearches",
     "wishlist": "wishlist",
-    "home": "home"
+    "home": "home",
+    'isDarkTheme': 'isDarkTheme'
   };
 
   //Colors for theme
@@ -33,10 +34,7 @@ class Constants {
   static double baseHeight = 640;
 
   static double screenAwareSize(double size, BuildContext context) {
-    return size * MediaQuery
-        .of(context)
-        .size
-        .height / baseHeight;
+    return size * MediaQuery.of(context).size.height / baseHeight;
   }
 
   static ThemeData lightTheme = ThemeData(

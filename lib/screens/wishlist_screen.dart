@@ -4,6 +4,7 @@ import 'package:cool_store/widgets/CartItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// TODO add wishlist adding and removing functionality
 class WishListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,13 +27,8 @@ class WishListScreen extends StatelessWidget {
                     product: product,
                     variation: variation,
                     primaryTitle: 'Move to cart',
-                    onSecondaryButtonPressed: () {
-
-                    },
-                    onPrimaryButtonPressed: () {
-
-
-                    },
+                    onSecondaryButtonPressed: () {},
+                    onPrimaryButtonPressed: () {},
                   );
                 })
           ]))
