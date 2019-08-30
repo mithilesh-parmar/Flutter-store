@@ -96,12 +96,8 @@ class CategoryScreen extends StatelessWidget {
                       return CategoryBanner(state.categories[pos], () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return ProductListScreen(
-                              state.categories[pos].id,
-                              state.categories[pos].image,
-                              state.categories[pos].name,
-                            state.categories[pos].totalProduct
-                          );
+                          final item = state.categories[pos];
+                          return ProductListScreen(category: item);
                         }));
                       });
                     })
