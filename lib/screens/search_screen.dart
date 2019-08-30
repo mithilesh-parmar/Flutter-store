@@ -1,7 +1,10 @@
+import 'package:cool_store/states/app_state.dart';
 import 'package:cool_store/states/search_state.dart';
+import 'package:cool_store/widgets/InfoView.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ShimmerGrid.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -67,48 +70,61 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 state.showKeywords
-                    ? ListView.separated(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.keyWords.length,
-                        itemBuilder: (context, pos) {
-                          return ListTile(
-                            onTap: () {
-                              _searchController.text = state.keyWords[pos];
-                              state.setKeyword(state.keyWords[pos]);
-                            },
-                            onLongPress: () {
-                              state.removeKeyword(state.keyWords[pos]);
-                            },
-                            title: Text('${state.keyWords[pos]}'),
-                            leading: Icon(Icons.search),
-                            trailing: Icon(Icons.chevron_right),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(),
-                      )
+                    ? buildKeywords(state)
                     : state.isResultLoading
                         ? ShimmerGrid()
-                        : GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 2,
-                                    crossAxisSpacing: 2,
-                                    childAspectRatio: .6),
-                            itemCount: state.searchResult.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, pos) {
-                              return ProductDisplayCard(
-                                onPressed: () {},
-                                product: state.searchResult[pos],
-                              );
-                            })
+                        : state.searchResult.length > 0
+                            ? buildResultView(state)
+                            : InfoView(
+                                primaryText:
+                                    'We couldn\'t find any matches for ${state.searchKeyword} ',
+                                secondaryText:
+                                    'Maybe your search was too specific, please try searching with another term',
+                              )
               ]))
             ],
           ),
         ));
+  }
+
+  GridView buildResultView(SearchState state) {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            childAspectRatio: .6),
+        itemCount: state.searchResult.length,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (context, pos) {
+          return ProductDisplayCard(
+            onPressed: () {},
+            product: state.searchResult[pos],
+          );
+        });
+  }
+
+  ListView buildKeywords(SearchState state) {
+    return ListView.separated(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: state.keyWords.length,
+      itemBuilder: (context, pos) {
+        return ListTile(
+          onTap: () {
+            _searchController.text = state.keyWords[pos];
+            state.setKeyword(state.keyWords[pos]);
+          },
+          onLongPress: () {
+            state.removeKeyword(state.keyWords[pos]);
+          },
+          title: Text('${state.keyWords[pos]}'),
+          leading: Icon(Icons.search),
+          trailing: Icon(Icons.chevron_right),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+    );
   }
 }

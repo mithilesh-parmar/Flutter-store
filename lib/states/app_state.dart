@@ -19,6 +19,8 @@ class AppState extends ChangeNotifier {
 
   Widget get selectedScreen => _selectedScreen;
 
+  List get screens => _screens;
+
   ThemeData getTheme() => _themeData;
 
   _setTheme(ThemeData themeData) {
@@ -62,5 +64,9 @@ class AppState extends ChangeNotifier {
       isDark = preferences.getBool(Constants.kLocalKey['isDarkTheme']);
       isDark ? setDarkTheme() : setLightTheme();
     }
+  }
+
+  void navigateToHome() {
+    setScreenIndex(0);
   }
 }

@@ -32,6 +32,7 @@ dependencies:
   localstorage: ^2.0.0
   shared_preferences: ^0.5.3+4
   extended_image: ^0.5.6
+  flutter_svg: ^0.14.0
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +54,11 @@ flutter:
   assets:
    - category_image_default.jpg
    - empty_cart.png
+   - no_result.svg
+   - empty.svg
+   - wishlist.png
+   - list.svg
+   - shoppint_cart_empty.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
