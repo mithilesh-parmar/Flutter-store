@@ -89,7 +89,11 @@ class _ChooserState extends State<Chooser> {
                         onTap: () {
                           Navigator.of(context).pop(value);
                         },
-                        title: Text(value),
+                        title: Center(
+                            child: Text(
+                          value,
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        )),
                       ))
                   .toList(),
             ),
@@ -97,3 +101,5 @@ class _ChooserState extends State<Chooser> {
         });
   }
 }
+
+

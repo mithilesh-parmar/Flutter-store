@@ -1,6 +1,7 @@
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/detail_state.dart';
+import 'package:cool_store/widgets/VariantChooser.dart';
 import 'package:cool_store/widgets/ImageView.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ProductDescription.dart';

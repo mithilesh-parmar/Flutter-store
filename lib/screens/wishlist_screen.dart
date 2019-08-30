@@ -6,7 +6,6 @@ import 'package:cool_store/widgets/InfoView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// TODO add wishlist adding and removing functionality
 class WishListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

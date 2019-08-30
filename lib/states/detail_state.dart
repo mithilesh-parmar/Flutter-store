@@ -20,10 +20,10 @@ class DetailState extends ChangeNotifier {
   int _categoryId;
 
   // contains id of variation and variation itself
-  Map<String, ProductVariation> testMap = HashMap();
+  Map<String, ProductVariation> variationMap = HashMap();
 
   // container attribute name and value
-  Map<String, String> testAttributesMap = HashMap();
+  Map<String, String> attributesMap = HashMap();
 
   DetailState(id) {
     this._productId = id.toString();
@@ -42,17 +42,23 @@ class DetailState extends ChangeNotifier {
   Product get product => _product;
 
   initProduct() async {
-    _product = await _services.getProduct(_productId);
-    _categoryId = _product.categoryId;
-    isLoading = false;
-    notifyListeners();
-    initRelatedProducts();
-    initProductVariations();
+    try {
+      _product = await _services.getProduct(_productId);
+      _categoryId = _product.categoryId;
+      isLoading = false;
+      notifyListeners();
+      initRelatedProducts();
+      initProductVariations();
+    } catch (e) {
+      print('$e');
+//      throw Exception('No INTERNET CONNECTION');
+    }
   }
 
   changeAttributesTo(String attribute, String value) {
-    testAttributesMap.update(attribute, (_) => value, ifAbsent: () => value);
-    changeProductVariation(testMap[testAttributesMap.toString()]);
+    if (value == null) print('no value for $attribute selected');
+    attributesMap.update(attribute, (_) => value, ifAbsent: () => value);
+    changeProductVariation(variationMap[attributesMap.toString()]);
   }
 
   void changeProductVariation(ProductVariation variation) {
@@ -81,7 +87,8 @@ class DetailState extends ChangeNotifier {
         map.update(value.name, (_) => value.option,
             ifAbsent: () => value.option);
       });
-      testMap.update(map.toString(), (_) => variant, ifAbsent: () => variant);
+      variationMap.update(map.toString(), (_) => variant,
+          ifAbsent: () => variant);
     });
   }
 
@@ -95,11 +102,6 @@ class DetailState extends ChangeNotifier {
   addToCart(context) {
     if (_currentVariation == null) throw 'Please select variation';
     if (_product == null) throw 'product not loaded';
-//    Provider.of<CartState>(context).addProduct(
-//      _product,
-//      quantity,
-//      _currentVariation,
-//    );
     Provider.of<CartState>(context)
         .addProductToCart(_product, _currentVariation, int.parse(quantity));
   }
