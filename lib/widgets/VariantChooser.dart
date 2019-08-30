@@ -19,7 +19,7 @@ class _VariantChooserState extends State<VariantChooser> {
   int time = 1000;
   int offset = 50;
 
-  Color baseColor, highlightColor;
+  Color baseColor, highlightColor, borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class _VariantChooserState extends State<VariantChooser> {
     final theme = Theme.of(context);
     baseColor = theme.iconTheme.color;
     highlightColor = theme.primaryColor;
+    borderColor = theme.textTheme.title.color.withOpacity(.7);
     return Container(
       height: Constants.screenAwareSize(40, context),
       child: Row(
@@ -49,8 +50,7 @@ class _VariantChooserState extends State<VariantChooser> {
                   offset += 80;
                   time += offset;
                   return state.isVariantsLoading
-                      ? buildLoadingContainers(
-                          pos, time, baseColor, highlightColor)
+                      ? buildLoadingContainers(pos, time)
                       : buildVariantContainer(state, pos);
                 }),
           )
@@ -59,7 +59,7 @@ class _VariantChooserState extends State<VariantChooser> {
     );
   }
 
-  Widget buildLoadingContainers(pos, time, baseColor, highlightColor) {
+  Widget buildLoadingContainers(pos, time) {
     return Shimmer.fromColors(
       child: Container(
         padding: EdgeInsets.all(8),
@@ -67,9 +67,8 @@ class _VariantChooserState extends State<VariantChooser> {
             BoxConstraints(minWidth: Constants.screenAwareSize(20, context)),
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(2)
-        ),
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.circular(2)),
         child: Center(
             child: Text(
           '${widget.options[pos]}',
@@ -95,7 +94,7 @@ class _VariantChooserState extends State<VariantChooser> {
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
             border: Border.all(
-                color: selectedIndex == pos ? Colors.redAccent : Colors.black)),
+                color: selectedIndex == pos ? Colors.redAccent : borderColor)),
         child: Center(
             child: Text(
           '${widget.options[pos]}',
