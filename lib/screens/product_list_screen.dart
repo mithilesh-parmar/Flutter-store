@@ -24,6 +24,26 @@ class ProductListScreen extends StatelessWidget {
                   slivers: <Widget>[
                     SliverAppBar(
                       expandedHeight: Constants.screenAwareSize(180, context),
+                      bottom: PreferredSize(
+                          child: Container(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    child: FlatButton(
+                                        onPressed: () {}, child: Text('SORT'))),
+                                Container(
+                                  width: 1,
+                                  height: 15,
+                                  color: Colors.black,
+                                ),
+                                Expanded(
+                                    child: FlatButton(
+                                        onPressed: () {},
+                                        child: Text('FILTER')))
+                              ],
+                            ),
+                          ),
+                          preferredSize: Size(100, 100)),
                       flexibleSpace: FlexibleSpaceBar(
                         background: Stack(
                           children: <Widget>[
