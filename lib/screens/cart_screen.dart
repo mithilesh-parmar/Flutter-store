@@ -2,6 +2,7 @@ import 'package:cool_store/models/product.dart';
 import 'package:cool_store/screens/checkout_screen.dart';
 import 'package:cool_store/screens/detail_screen.dart';
 import 'package:cool_store/screens/wishlist_screen.dart';
+import 'package:cool_store/states/app_state.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/checkout_state.dart';
 import 'package:cool_store/utils/constants.dart';
@@ -215,7 +216,34 @@ class CartScreen extends StatelessWidget {
                             fontSize: 40,
                             fontWeight: FontWeight.w200),
                       ),
-                    )
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                        child: FlatButton(
+                            color: Theme.of(context).accentColor,
+                            onPressed: () {
+
+                            },
+                            child: Text(
+                              'CONTINUE SHOPPING',
+                              style: TextStyle(
+                                  color: Colors.white, fontFamily: 'Raleway'),
+                            ))),
+                    if (state.wishListProducts.length > 0)
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                          child: FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => WishListScreen(),
+                                    fullscreenDialog: true));
+                              },
+                              child: Text(
+                                'WISHLIST',
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                    fontFamily: 'Raleway'),
+                              ))),
                   ],
                 )
         ]))

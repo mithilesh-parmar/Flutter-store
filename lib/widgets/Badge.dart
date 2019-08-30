@@ -25,6 +25,7 @@ class Badge extends StatelessWidget {
             Icon(
               iconData,
               size: Constants.screenAwareSize(20, context),
+              color: themeData.iconTheme.color.withOpacity(.8),
             ),
             Positioned(
                 bottom: 5,
