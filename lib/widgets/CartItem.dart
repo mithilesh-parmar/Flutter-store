@@ -4,21 +4,20 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class CartItem extends StatelessWidget {
-  final Function onTap, onSecondaryButtonPressed, onPrimaryButtonPressed;
+  final Function onTap, onRemovePressed, onPrimaryButtonPressed;
 
-  final String primaryTitle, secondaryTitle;
+  final String primaryTitle;
   final Product product;
   final ProductVariation variation;
   final int quantity;
 
   CartItem(
       {this.onTap,
-      this.onSecondaryButtonPressed,
+      this.onRemovePressed,
       this.onPrimaryButtonPressed,
       this.variation,
       this.product,
       this.primaryTitle = 'Add to wishlist',
-      this.secondaryTitle = 'Remove',
       this.quantity = 1});
 
   @override
@@ -30,6 +29,11 @@ class CartItem extends StatelessWidget {
           leading: ExtendedImage.network(
             product.featuredImage,
             cache: true,
+            fit: BoxFit.contain,
+            constraints: BoxConstraints(
+              maxHeight: Constants.screenAwareSize(60, context),
+              maxWidth: Constants.screenAwareSize(60, context)
+            ),
           ),
           subtitle: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -60,8 +64,8 @@ class CartItem extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: RawMaterialButton(
-                  onPressed: onSecondaryButtonPressed,
-                  child: Text('$secondaryTitle'),
+                  onPressed: onRemovePressed,
+                  child: Text('REMOVE'),
                 ),
               ),
               Expanded(

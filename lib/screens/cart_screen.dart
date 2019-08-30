@@ -5,6 +5,7 @@ import 'package:cool_store/screens/wishlist_screen.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/checkout_state.dart';
 import 'package:cool_store/utils/constants.dart';
+import 'package:cool_store/widgets/Badge.dart';
 import 'package:cool_store/widgets/CartItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,22 +22,33 @@ class CartScreen extends StatelessWidget {
             delegate: SliverChildListDelegate([
           Container(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'Cart',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Raleway',
-                      fontSize: 40),
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    'Cart',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Raleway',
+                        fontSize: 40),
+                  ),
                 ),
                 Spacer(),
-                IconButton(
-                    icon: Icon(Icons.card_travel),
-                    onPressed: () {
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => WishListScreen(),
                           fullscreenDialog: true));
-                    })
+                    },
+                    child: Badge(
+                      iconData: Icons.shopping_cart,
+                    ),
+                  ),
+                )
               ],
             ),
             padding: EdgeInsets.symmetric(horizontal: 17, vertical: 8),
@@ -73,7 +85,7 @@ class CartScreen extends StatelessWidget {
                             onPrimaryButtonPressed: () {
                               state.addProductToWishList(product, variation);
                             },
-                            onSecondaryButtonPressed: () {
+                            onRemovePressed: () {
                               state.removeProduct(product.id);
                             },
                             onTap: () {

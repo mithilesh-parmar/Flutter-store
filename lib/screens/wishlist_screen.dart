@@ -27,8 +27,12 @@ class WishListScreen extends StatelessWidget {
                     product: product,
                     variation: variation,
                     primaryTitle: 'Move to cart',
-                    onSecondaryButtonPressed: () {},
-                    onPrimaryButtonPressed: () {},
+                    onRemovePressed: () {
+                      state.removeProduct(product.id);
+                    },
+                    onPrimaryButtonPressed: () {
+                      state.removeProductAndAddToCart(product, variation);
+                    },
                   );
                 })
           ]))

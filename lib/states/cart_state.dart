@@ -78,6 +78,14 @@ class CartState extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeProductAndAddToCart(
+      Product product, ProductVariation productVariation) {
+    _wishListProducts.remove(product);
+    notifyListeners();
+    addProductToCart(product, productVariation, 1);
+
+  }
+
   removeProduct(int id) {
     _productsInCart.remove(id.toString());
     _products.remove(id);
@@ -90,8 +98,6 @@ class CartState extends ChangeNotifier {
   setCouponCode(String value) {
     couponCode = value;
   }
-
-
 
   updateTotalPayableAmount() =>
       totalCartPayableAmount = totalCartAmount + totalCartExtraCharge;
