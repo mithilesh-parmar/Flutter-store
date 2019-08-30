@@ -8,6 +8,8 @@ class HomeState extends ChangeNotifier {
   Services _services;
   bool isLoading;
   List<Product> products;
+  String errorMessage;
+  bool errorOccured = false;
 
   HomeState() {
     isLoading = true;
@@ -23,6 +25,8 @@ class HomeState extends ChangeNotifier {
       notifyListeners();
       cacheProducts();
     } catch (e) {
+      errorOccured = true;
+      errorMessage = e.toString();
       loadProductsFromCache();
     }
   }
