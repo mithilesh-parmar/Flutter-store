@@ -38,7 +38,7 @@ class ShimmerHorizontalLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height / 3,
-      width: MediaQuery.of(context).size.width / 2 ,
+      width: MediaQuery.of(context).size.width / 2,
       margin: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -3,21 +3,21 @@ import 'package:cool_store/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Chooser extends StatefulWidget {
+class DefaultChooser extends StatefulWidget {
   final String title;
   final List options;
 
-  Chooser({this.title, this.options});
+  DefaultChooser({this.title, this.options});
 
   @override
-  _ChooserState createState() => _ChooserState();
+  _DefaultChooserState createState() => _DefaultChooserState();
 }
 
-class _ChooserState extends State<Chooser> {
+class _DefaultChooserState extends State<DefaultChooser> {
   int index = 0;
   String value = 'SELECT';
 
-  _ChooserState();
+  _DefaultChooserState();
 
   @override
   Widget build(BuildContext context) {

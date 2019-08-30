@@ -2,10 +2,10 @@ import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:cool_store/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:provider/provider.dart';
 
 class ProductDescription extends StatelessWidget {
   final Product product;
+  final textStyle = TextStyle(fontFamily: 'Raleway');
 
   ProductDescription(this.product);
 
@@ -21,6 +21,7 @@ class ProductDescription extends StatelessWidget {
             children: <Widget>[
               HtmlWidget(
                 product.description,
+                textStyle: textStyle,
               ),
             ],
             expand: true),
@@ -40,7 +41,12 @@ class ProductDescription extends StatelessWidget {
             height: 1, decoration: BoxDecoration(color: Colors.grey[200])),
         ExpansionInfo(
           title: 'ADDITIONAL INFO',
-          children: <Widget>[HtmlWidget(product.description)],
+          children: <Widget>[
+            HtmlWidget(
+              product.description,
+              textStyle: textStyle,
+            )
+          ],
         ),
       ],
     );
@@ -65,7 +71,8 @@ class ExpansionInfo extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(title, style: TextStyle(fontSize: 17)),
+                  Text(title,
+                      style: TextStyle(fontSize: 17, fontFamily: 'Raleway')),
                   Icon(
                     Icons.keyboard_arrow_up,
                     size: 20,
@@ -78,7 +85,8 @@ class ExpansionInfo extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(title, style: TextStyle(fontSize: 17)),
+                  Text(title,
+                      style: TextStyle(fontSize: 17, fontFamily: 'Raleway')),
                   Icon(
                     Icons.keyboard_arrow_right,
                     size: 20,

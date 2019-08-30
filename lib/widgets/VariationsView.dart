@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'Chooser.dart';
+import 'DefaultChooser.dart';
 
 class VariationsView extends StatelessWidget {
   final Product product;
@@ -18,17 +18,17 @@ class VariationsView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: product.attributes.map((value) {
-          if (value.name == 'SIZE')
+          if (value.name == 'SIZE' || value.name == 'size')
             return VariantChooser(
               title: value.name,
               options: value.options,
             );
-          else if (value.name == 'COLOR')
+          else if (value.name == 'COLOR' || value.name == 'color')
             return VariantChooser(
               title: value.name,
               options: value.options,
             );
-          return Chooser(
+          return DefaultChooser(
             title: value.name,
             options: value.options,
           );

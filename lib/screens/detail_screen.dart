@@ -1,7 +1,6 @@
 import 'package:cool_store/models/product.dart';
-import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/detail_state.dart';
-import 'package:cool_store/widgets/VariantChooser.dart';
+import 'package:cool_store/widgets/ShimmerList.dart';
 import 'package:cool_store/widgets/ImageView.dart';
 import 'package:cool_store/widgets/ProductCard.dart';
 import 'package:cool_store/widgets/ProductDescription.dart';
@@ -41,8 +40,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   centerTitle: false,
                   pinned: true,
                   floating: false,
-//                  expandedHeight: Constants.screenAwareSize(330, context),
-//                  flexibleSpace: FlexibleSpaceBar(background: ImageView()),
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -105,8 +102,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                 height:
                                     MediaQuery.of(context).size.height / 2.7,
                                 child: state.isRelatedProductsLoading
-                                    ? Center(
-                                        child: CircularProgressIndicator(),
+                                    ? ShimmerList(
+                                        direction: Axis.horizontal,
                                       )
                                     : ListView.builder(
                                         shrinkWrap: true,
