@@ -19,7 +19,7 @@ class _VariantChooserState extends State<VariantChooser> {
   int time = 1000;
   int offset = 50;
 
-  Color baseColor, highlightColor, borderColor;
+  Color baseColor, highlightColor, borderColor, accentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class _VariantChooserState extends State<VariantChooser> {
     final theme = Theme.of(context);
     baseColor = theme.iconTheme.color;
     highlightColor = theme.primaryColor;
+    accentColor = theme.accentColor.withOpacity(.85);
     borderColor = theme.textTheme.title.color.withOpacity(.7);
     return Container(
       height: Constants.screenAwareSize(40, context),
@@ -63,8 +64,9 @@ class _VariantChooserState extends State<VariantChooser> {
     return Shimmer.fromColors(
       child: Container(
         padding: EdgeInsets.all(8),
-        constraints:
-            BoxConstraints(minWidth: Constants.screenAwareSize(20, context)),
+        constraints: BoxConstraints(
+            minWidth: Constants.screenAwareSize(30, context),
+            minHeight: Constants.screenAwareSize(35, context)),
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
             border: Border.all(color: borderColor),
@@ -89,12 +91,14 @@ class _VariantChooserState extends State<VariantChooser> {
       },
       child: Container(
         padding: EdgeInsets.all(8),
-        constraints:
-            BoxConstraints(minWidth: Constants.screenAwareSize(20, context)),
+        constraints: BoxConstraints(
+            minWidth: Constants.screenAwareSize(30, context),
+            minHeight: Constants.screenAwareSize(35, context)),
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
             border: Border.all(
-                color: selectedIndex == pos ? Colors.redAccent : borderColor)),
+                color: selectedIndex == pos ? accentColor : borderColor)),
         child: Center(
             child: Text(
           '${widget.options[pos]}',

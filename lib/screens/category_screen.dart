@@ -99,7 +99,9 @@ class CategoryScreen extends StatelessWidget {
                           return ProductListScreen(
                               state.categories[pos].id,
                               state.categories[pos].image,
-                              state.categories[pos].name);
+                              state.categories[pos].name,
+                            state.categories[pos].totalProduct
+                          );
                         }));
                       });
                     })
