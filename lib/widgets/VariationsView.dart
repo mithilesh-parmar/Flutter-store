@@ -1,5 +1,6 @@
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/states/detail_state.dart';
+import 'package:cool_store/widgets/ColorChooser.dart';
 import 'package:cool_store/widgets/VariantChooser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,11 @@ class VariationsView extends StatelessWidget {
               title: value.name,
               options: value.options,
             );
-          else if (value.name == 'COLOR' || value.name == 'color')
-            return VariantChooser(
+          else if (value.name == 'COLOR' ||
+              value.name == 'color' ||
+              value.name == 'colour' ||
+              value.name == 'COLOUR')
+            return ColorChooser(
               title: value.name,
               options: value.options,
             );
