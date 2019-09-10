@@ -17,7 +17,10 @@ class Constants {
     "recentSearches": "recentSearches",
     "wishlist": "wishlist",
     "home": "home",
-    'isDarkTheme': 'isDarkTheme'
+    'isDarkTheme': 'isDarkTheme',
+    'productsInCart': 'productsInCart',
+    'cartproducts': 'products',
+    'productVariationsInCart': 'productVariationsInCart'
   };
 
   //Colors for theme
