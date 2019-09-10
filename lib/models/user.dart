@@ -11,13 +11,14 @@ class Address {
 
   Address(
       {this.firstName,
-        this.lastName,
-        this.email,
-        this.street,
-        this.city,
-        this.state,
-        this.country,
-        this.phoneNumber,this.zipCode});
+      this.lastName,
+      this.email,
+      this.street,
+      this.city,
+      this.state,
+      this.country,
+      this.phoneNumber,
+      this.zipCode});
 
   Address.fromJson(Map<String, dynamic> parsedJson) {
     firstName = parsedJson["first_name"];
@@ -71,5 +72,10 @@ class Address {
         state.isNotEmpty &&
         country.isNotEmpty &&
         phoneNumber.isNotEmpty;
+  }
+
+  @override
+  String toString() {
+    return '\nFirst Name:$firstName\nLastName:$lastName\nemail:$email\nstreet:$street\ncity:$city\nState:$state\ncountry:$country\nPhoneNumber:$phoneNumber';
   }
 }
