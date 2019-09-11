@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:cool_store/models/payment.dart';
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/models/user.dart';
@@ -9,7 +10,7 @@ import 'package:localstorage/localstorage.dart';
 
 class CartState extends ChangeNotifier {
   // product and id
-  Map<int, Product> _products;
+  Map<String, Product> _products;
 
   // product id and the quantity
   Map<String, int> _productsInCart;
@@ -25,7 +26,7 @@ class CartState extends ChangeNotifier {
 
   double totalCartAmount = 0;
 
-  Map<int, Product> get products => _products; //  addProduct(
+  Map<String, Product> get products => _products; //  addProduct(
 
   Map<Product, ProductVariation> _wishListProducts = HashMap();
 
@@ -44,6 +45,8 @@ class CartState extends ChangeNotifier {
   PaymentMethod paymentMethod;
 
   String couponCode;
+
+  List localSavedProducts = List();
 
   CartState() {
     _products = HashMap();
@@ -66,18 +69,19 @@ class CartState extends ChangeNotifier {
   }
 
   addProductToCart(Product product, ProductVariation variation, int quantity) {
+    localSavedProducts.add(LocalSavedProduct(
+        productVariation: variation, product: product, quantity: quantity));
     _productsInCart.update(product.id.toString(), (_) => quantity,
         ifAbsent: () => quantity);
-    _products.update(product.id, (_) => product, ifAbsent: () => product);
+    _products.update(product.id.toString(), (_) => product,
+        ifAbsent: () => product);
     _productVariationsInCart.update(product.id.toString(), (_) => variation,
         ifAbsent: () => variation);
     notifyListeners();
-//    _saveProductsToLocalStorage();
-    print('_productsInCart: ${json.encode(_productsInCart)}');
-    print('_products: ${json.encode(_products)}');
-    print('_productVariationsInCart: ${json.encode(_productVariationsInCart)}');
+    _saveProductsToLocalStorage();
   }
 
+  // Save products to local storage
   _saveProductsToLocalStorage() async {
     final LocalStorage _localStorage = LocalStorage(
       Constants.APP_FOLDER,
@@ -87,12 +91,7 @@ class CartState extends ChangeNotifier {
       final ready = await _localStorage.ready;
       if (ready) {
         await _localStorage.setItem(Constants.kLocalKey['productsInCart'],
-            json.encode(_productsInCart));
-        await _localStorage.setItem(
-            Constants.kLocalKey['cartproducts'], json.encode(_products));
-        await _localStorage.setItem(
-            Constants.kLocalKey['productVariationsInCart'],
-            json.encode(_productVariationsInCart));
+            json.encode(localSavedProducts));
       }
     } catch (e) {
       throw e;
@@ -104,19 +103,26 @@ class CartState extends ChangeNotifier {
     try {
       final ready = await _localStorage.ready;
       if (ready) {
-        if (_localStorage.getItem(Constants.kLocalKey['productsInCart']) !=
-            null)
-          _productsInCart = json.decode(await _localStorage
+        if (await _localStorage
+                .getItem(Constants.kLocalKey['productsInCart']) !=
+            null) {
+          localSavedProducts = jsonDecode(await _localStorage
               .getItem(Constants.kLocalKey['productsInCart']));
-        if (_localStorage.getItem(Constants.kLocalKey['cartproducts']) != null)
-          _products = json.decode(
-              await _localStorage.getItem(Constants.kLocalKey['cartproducts']));
-        if (_localStorage
-                .getItem(Constants.kLocalKey['productVariationsInCart']) !=
-            null)
-          _productVariationsInCart = json.decode(await _localStorage
-              .getItem(Constants.kLocalKey['productVariationsInCart']));
-        print('cart prodcuts Loaded from localstorage');
+          localSavedProducts.forEach((localJson) {
+            print('$localJson');
+            final item = LocalSavedProduct.fromJson(localJson);
+            print('$item');
+            _productsInCart.update(
+                item.product.id.toString(), (_) => item.quantity,
+                ifAbsent: () => item.quantity);
+            _products.update(item.product.id.toString(), (_) => item.product,
+                ifAbsent: () => item.product);
+            _productVariationsInCart.update(
+                item.product.id.toString(), (_) => item.productVariation,
+                ifAbsent: () => item.productVariation);
+            notifyListeners();
+          });
+        }
       }
     } catch (e) {
       throw e;
@@ -153,4 +159,34 @@ class CartState extends ChangeNotifier {
 
   updateTotalPayableAmount() =>
       totalCartPayableAmount = totalCartAmount + totalCartExtraCharge;
+}
+
+// class used to save and reterive product from local storage
+class LocalSavedProduct {
+  Product product;
+  ProductVariation productVariation;
+  int quantity;
+
+  LocalSavedProduct({this.product, this.productVariation, this.quantity});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'product': product,
+      'productVariation': productVariation,
+      'quantity': quantity
+    };
+  }
+
+  LocalSavedProduct.fromJson(Map<String, dynamic> parsedJson) {
+    product = Product.fromLocalJson(parsedJson['product']);
+    productVariation =
+        ProductVariation.fromJson(parsedJson['productVariation']);
+    quantity = parsedJson['quantity'];
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return '\n$product\n$productVariation\n$quantity';
+  }
 }

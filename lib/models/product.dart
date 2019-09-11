@@ -123,6 +123,9 @@ class ProductAttribute {
   String name;
   List options;
 
+
+
+
   ProductAttribute.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
     name = parsedJson["name"];
@@ -156,6 +159,14 @@ class Attribute {
 
   Attribute();
 
+  Map<String,dynamic> toJson(){
+    return {
+      'id':id,
+      'name':name,
+      'option':option
+    };
+  }
+
   Attribute.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
     name = parsedJson["name"];
@@ -181,6 +192,19 @@ class ProductVariation {
 
   ProductVariation();
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'price': price,
+      'regularPrice': regularPrice,
+      'salePrice': salePrice,
+      'onSale': onSale,
+      'inStock': inStock,
+      'imageFeature': imageFeature,
+      'attributes': attributes
+    };
+  }
+
   ProductVariation.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
     price = parsedJson["price"];
@@ -188,7 +212,7 @@ class ProductVariation {
     salePrice = parsedJson["sale_price"];
     onSale = parsedJson["on_sale"];
     inStock = parsedJson["in_stock"];
-    imageFeature = parsedJson["image"]["src"];
+    imageFeature = parsedJson["imageFeature"];
 
     List<Attribute> attributeList = [];
     parsedJson["attributes"].forEach((item) {

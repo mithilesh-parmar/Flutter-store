@@ -140,7 +140,7 @@ class WooCommerceAPI {
   }
 
   Future<dynamic> getAsync(String endPoint) async {
-    debugPrint('int woocommerceAPI getAsync method');
+//    debugPrint('int woocommerceAPI getAsync method');
     var url = this._getOAuthURL("GET", endPoint);
 
     final response = await http.get(url);
