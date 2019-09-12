@@ -1,4 +1,6 @@
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/screens/order_review_screen.dart';
+import 'package:cool_store/screens/order_summary_screen.dart';
 import 'package:cool_store/screens/shipping_address_screen.dart';
 import 'package:cool_store/screens/shipping_methods_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,7 @@ class _CheckoutState extends State<Checkout> {
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         child: PageView.builder(
-          itemCount: 3,
+          itemCount: 4,
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
@@ -38,7 +40,16 @@ class _CheckoutState extends State<Checkout> {
                   function: nextPage,
                 );
               case 1:
-                return ShippingMethodsScreen();
+                return ShippingMethodsScreen(
+                  onNextPressed: nextPage,
+                  onBackPressed: previousPage,
+                );
+              case 2:
+                return OrderReview(
+                  onButtonClicked: nextPage,
+                );
+              case 3:
+                return OrderSummary();
             }
             return Container();
           },
@@ -48,7 +59,22 @@ class _CheckoutState extends State<Checkout> {
   }
 
   nextPage() {
-    _pageController.animateToPage(_currentPage++,
-        duration: Duration(milliseconds: 400), curve: Curves.ease);
+    print('Next page $_currentPage');
+    if (_currentPage == 3) return;
+    setState(() {
+      _currentPage++;
+      _pageController.animateToPage(_currentPage,
+          duration: Duration(milliseconds: 400), curve: Curves.ease);
+    });
+  }
+
+  previousPage() {
+    print('prev page $_currentPage');
+    if (_currentPage == 0) return;
+    setState(() {
+      _currentPage--;
+      _pageController.animateToPage(_currentPage,
+          duration: Duration(milliseconds: 400), curve: Curves.ease);
+    });
   }
 }

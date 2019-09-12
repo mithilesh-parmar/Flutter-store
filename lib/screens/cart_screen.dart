@@ -1,4 +1,4 @@
-import 'package:cool_store/models/product.dart';
+import 'package:badges/badges.dart';
 import 'package:cool_store/screens/checkout_screen.dart';
 import 'package:cool_store/screens/detail_screen.dart';
 import 'package:cool_store/screens/wishlist_screen.dart';
@@ -6,11 +6,11 @@ import 'package:cool_store/states/app_state.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/states/checkout_state.dart';
 import 'package:cool_store/utils/constants.dart';
-import 'package:cool_store/widgets/Badge.dart';
+
 import 'package:cool_store/widgets/CartItem.dart';
 import 'package:cool_store/widgets/InfoView.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:provider/provider.dart';
 
 // TODO change total
@@ -40,15 +40,24 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => WishListScreen(),
-                          fullscreenDialog: true));
-                    },
-                    child: Badge(
-                      iconData: Icons.shopping_cart,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => WishListScreen(),
+                        fullscreenDialog: true));
+                  },
+                  child: Badge(
+                    elevation: 0,
+                    showBadge: state.wishListCartProducts.length != 0,
+                    badgeContent: Text(
+                      '${state.wishListCartProducts.length}',
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
+                    badgeColor: Theme.of(context).primaryColor,
+                    animationType: BadgeAnimationType.scale,
+                    child: Icon(
+                      Icons.favorite,
+                      color: Colors.redAccent,
                     ),
                   ),
                 )
@@ -56,13 +65,13 @@ class CartScreen extends StatelessWidget {
             ),
             padding: EdgeInsets.symmetric(horizontal: 17, vertical: 8),
           ),
-          state.products.length > 0
+          state.cartProducts.length > 0
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       child: Text(
-                        'Total items ${state.productsInCart.length}',
+                        'Total items ${state.cartProducts.length}',
                         style: TextStyle(
                           fontWeight: FontWeight.w300,
                           fontFamily: 'Raleway',
@@ -80,15 +89,15 @@ class CartScreen extends StatelessWidget {
                         children: <Widget>[
                           // coupon view
 
-                          buildCouponView(context, state),
+//                          buildCouponView(context, state),
 
-                          Padding(
-                            padding: const EdgeInsets.only(top: 18.0),
-                            child: ListTile(
-                              leading: Text('Total'),
-                              trailing: Text('${state.totalCartAmount}'),
-                            ),
-                          ),
+//                          Padding(
+//                            padding: const EdgeInsets.only(top: 18.0),
+//                            child: ListTile(
+//                              leading: Text('Total'),
+//                              trailing: Text('${state.totalCartAmount}'),
+//                            ),
+//                          ),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -180,25 +189,23 @@ class CartScreen extends StatelessWidget {
     return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: state.products.length,
+        itemCount: state.cartProducts.length,
         itemBuilder: (context, pos) {
-          Product product = state.products.values.elementAt(pos);
-//          Product testProduct = state.localSavedProducts[pos].product;
-//          ProductVariation testProductVariation =
-//              state.localSavedProducts[pos].productVariation;
-//          int quantity = state.localSavedProducts[pos].quantity;
-          ProductVariation variation =
-              state.productVariationsInCart[product.id.toString()];
+          final item = state.cartProducts[pos];
+          final product = item.product;
+          final variation = item.productVariation;
+          final quantity = item.quantity;
           return CartItem(
             product: product,
-            quantity: state.productsInCart[product.id.toString()],
+//            quantity: state.productsInCart[product.id.toString()],
             variation: variation,
-//            quantity: quantity,
+            quantity: quantity,
             onPrimaryButtonPressed: () {
-              state.addProductToWishList(product, variation);
+//              state.addProductToWishList(product, variation);
+              state.addProductToWishList(item);
             },
             onRemovePressed: () {
-              state.removeProduct(product.id);
+              state.removeProductFromCart(item);
             },
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(

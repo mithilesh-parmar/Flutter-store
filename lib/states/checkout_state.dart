@@ -4,6 +4,7 @@ import 'package:cool_store/models/shipping_methods.dart';
 
 import 'package:cool_store/models/user.dart';
 import 'package:cool_store/services/base_services.dart';
+import 'package:cool_store/states/cart_state.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -14,12 +15,18 @@ class CheckoutState extends ChangeNotifier {
   List _shippingMethods = List();
   bool isShippingMethodsLoading = true;
   ShippingMethods selectedShippingMethod;
+  List<CartProduct> cartProducts = List();
+  double subTotal = 0.0;
 
   Services get service => _service;
 
   CheckoutState() {
     getShippingMethods();
+
+    calculateSubTotal();
   }
+
+
 
   createOrder(
       Map<String, int> productsInCart,
@@ -32,15 +39,21 @@ class CheckoutState extends ChangeNotifier {
 
   getShippingMethods() async {
     _shippingMethods = await _service.getShippingMethods();
+    setShippingMethod(_shippingMethods[0]);
     isShippingMethodsLoading = false;
     notifyListeners();
   }
 
   List get shippingMethods => _shippingMethods;
 
-  setShippingMethod(item){
+  setShippingMethod(item) {
     selectedShippingMethod = item;
     notifyListeners();
   }
 
+  calculateSubTotal() {
+    cartProducts.forEach((item) {
+      subTotal += double.parse(item.productVariation.price);
+    });
+  }
 }

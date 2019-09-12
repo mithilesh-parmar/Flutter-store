@@ -1,4 +1,3 @@
-import 'package:cool_store/models/product.dart';
 import 'package:cool_store/states/app_state.dart';
 import 'package:cool_store/states/cart_state.dart';
 import 'package:cool_store/widgets/CartItem.dart';
@@ -17,25 +16,28 @@ class WishListScreen extends StatelessWidget {
           SliverAppBar(),
           SliverList(
               delegate: SliverChildListDelegate([
-            state.wishListProducts.length > 0
+            state.wishListCartProducts.length > 0
                 ? ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: state.wishListProducts.length,
+                    itemCount: state.wishListCartProducts.length,
                     itemBuilder: (context, pos) {
-                      Product product =
-                          state.wishListProducts.keys.elementAt(pos);
-                      ProductVariation variation =
-                          state.wishListProducts.values.elementAt(pos);
+//                      Product product =
+//                          state.wishListProducts.keys.elementAt(pos);
+//                      ProductVariation variation =
+//                          state.wishListProducts.values.elementAt(pos);
+                      final item = state.wishListCartProducts[pos];
+                      final product = item.product;
+                      final variation = item.productVariation;
                       return CartItem(
                         product: product,
                         variation: variation,
                         primaryTitle: 'Move to cart',
                         onRemovePressed: () {
-                          state.removeProduct(product.id);
+                          state.removeProductFromWishList(item);
                         },
                         onPrimaryButtonPressed: () {
-                          state.removeProductAndAddToCart(product, variation);
+                          state.removeProductAndAddToCart(item);
                         },
                       );
                     })

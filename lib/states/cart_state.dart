@@ -46,7 +46,8 @@ class CartState extends ChangeNotifier {
 
   String couponCode;
 
-  List localSavedProducts = List();
+  List cartProducts = List();
+  List wishListCartProducts = List();
 
   CartState() {
     _products = HashMap();
@@ -66,17 +67,23 @@ class CartState extends ChangeNotifier {
     paymentMethod = PaymentMethod(
         id: '1', title: 'cod', description: 'cash on delivery', enabled: true);
     _loadFromLocalStorage();
+    calculateTotalCartAmount();
   }
 
-  addProductToCart(Product product, ProductVariation variation, int quantity) {
-    localSavedProducts.add(LocalSavedProduct(
+  addProductToCart(
+    Product product,
+    ProductVariation variation,
+    int quantity,
+  ) {
+    cartProducts.add(CartProduct(
         productVariation: variation, product: product, quantity: quantity));
-    _productsInCart.update(product.id.toString(), (_) => quantity,
-        ifAbsent: () => quantity);
-    _products.update(product.id.toString(), (_) => product,
-        ifAbsent: () => product);
-    _productVariationsInCart.update(product.id.toString(), (_) => variation,
-        ifAbsent: () => variation);
+//    _productsInCart.update(product.id.toString(), (_) => quantity,
+//        ifAbsent: () => quantity);
+//    _products.update(product.id.toString(), (_) => product,
+//        ifAbsent: () => product);
+//    _productVariationsInCart.update(product.id.toString(), (_) => variation,
+//        ifAbsent: () => variation);
+    totalCartAmount += double.parse(variation.price);
     notifyListeners();
     _saveProductsToLocalStorage();
   }
@@ -90,8 +97,8 @@ class CartState extends ChangeNotifier {
     try {
       final ready = await _localStorage.ready;
       if (ready) {
-        await _localStorage.setItem(Constants.kLocalKey['productsInCart'],
-            json.encode(localSavedProducts));
+        await _localStorage.setItem(
+            Constants.kLocalKey['productsInCart'], json.encode(cartProducts));
       }
     } catch (e) {
       throw e;
@@ -106,20 +113,20 @@ class CartState extends ChangeNotifier {
         if (await _localStorage
                 .getItem(Constants.kLocalKey['productsInCart']) !=
             null) {
-          localSavedProducts = jsonDecode(await _localStorage
+          final localJson = jsonDecode(await _localStorage
               .getItem(Constants.kLocalKey['productsInCart']));
-          localSavedProducts.forEach((localJson) {
-//            print('$localJson');
-            final item = LocalSavedProduct.fromJson(localJson);
-//            print('$item');
-            _productsInCart.update(
-                item.product.id.toString(), (_) => item.quantity,
-                ifAbsent: () => item.quantity);
-            _products.update(item.product.id.toString(), (_) => item.product,
-                ifAbsent: () => item.product);
-            _productVariationsInCart.update(
-                item.product.id.toString(), (_) => item.productVariation,
-                ifAbsent: () => item.productVariation);
+          localJson.forEach((value) {
+            final item = CartProduct.fromJson(value);
+            cartProducts.add(item);
+
+//            _productsInCart.update(
+//                item.product.id.toString(), (_) => item.quantity,
+//                ifAbsent: () => item.quantity);
+//            _products.update(item.product.id.toString(), (_) => item.product,
+//                ifAbsent: () => item.product);
+//            _productVariationsInCart.update(
+//                item.product.id.toString(), (_) => item.productVariation,
+//                ifAbsent: () => item.productVariation);
             notifyListeners();
           });
         }
@@ -129,32 +136,62 @@ class CartState extends ChangeNotifier {
     }
   }
 
-  addProductToWishList(Product product, ProductVariation variation) {
-    _wishListProducts.update(product, (_) => variation,
-        ifAbsent: () => variation);
-    removeProduct(product.id);
+//  addProductToWishList(Product product, ProductVariation variation) {
+//    _wishListProducts.update(product, (_) => variation,
+//        ifAbsent: () => variation);
+//    removeProduct(product.id);
+//    notifyListeners();
+//  }
+
+  addProductToWishList(CartProduct product) {
+    wishListCartProducts.add(product);
+    removeProductFromCart(product);
+//    totalCartAmount -= double.parse(product.productVariation.price);
     notifyListeners();
   }
 
-  removeProductAndAddToCart(
-      Product product, ProductVariation productVariation) {
-    _wishListProducts.remove(product);
+  removeProductAndAddToCart(CartProduct item) {
+    wishListCartProducts.remove(item);
+    cartProducts.add(item);
+//    totalCartAmount += double.parse(item.productVariation.price);
     notifyListeners();
-    addProductToCart(product, productVariation, 1);
   }
 
-  removeProduct(int id) {
-    _productsInCart.remove(id.toString());
-    _products.remove(id);
-    _productVariationsInCart.remove(id);
+//  removeProduct(int id) {
+//    _productsInCart.remove(id.toString());
+//    _products.remove(id);
+//    _productVariationsInCart.remove(id);
+//
+//    notifyListeners();
+//
+//    _saveProductsToLocalStorage();
+//  }
 
+  removeProductFromCart(item) {
+    cartProducts.remove(item);
+//    totalCartAmount -= double.parse(item.productVariation.price);
     notifyListeners();
-
     _saveProductsToLocalStorage();
+  }
+
+  removeProductFromWishList(item) {
+    wishListCartProducts.remove(item);
+    notifyListeners();
   }
 
   setCouponCode(String value) {
     couponCode = value;
+  }
+
+  calculateTotalCartAmount() {
+    cartProducts
+        .forEach((item) => totalCartAmount += double.parse(item.product.price));
+  }
+
+  clearCart() {
+    cartProducts.clear();
+    notifyListeners();
+    _saveProductsToLocalStorage();
   }
 
   updateTotalPayableAmount() =>
@@ -162,12 +199,12 @@ class CartState extends ChangeNotifier {
 }
 
 // class used to save and reterive product from local storage
-class LocalSavedProduct {
+class CartProduct {
   Product product;
   ProductVariation productVariation;
   int quantity;
 
-  LocalSavedProduct({this.product, this.productVariation, this.quantity});
+  CartProduct({this.product, this.productVariation, this.quantity});
 
   Map<String, dynamic> toJson() {
     return {
@@ -177,7 +214,7 @@ class LocalSavedProduct {
     };
   }
 
-  LocalSavedProduct.fromJson(Map<String, dynamic> parsedJson) {
+  CartProduct.fromJson(Map<String, dynamic> parsedJson) {
     product = Product.fromLocalJson(parsedJson['product']);
     productVariation =
         ProductVariation.fromJson(parsedJson['productVariation']);

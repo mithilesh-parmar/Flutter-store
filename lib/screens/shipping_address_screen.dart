@@ -29,9 +29,11 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
       id: '1', title: 'cod', description: 'cash on delivery', enabled: true);
 
   TextEditingController _cityController = TextEditingController(text: 'jaipur');
-  TextEditingController _streetController = TextEditingController(text: 'vit road');
+  TextEditingController _streetController =
+      TextEditingController(text: 'vit road');
   TextEditingController _zipController = TextEditingController(text: '343905');
-  TextEditingController _stateController = TextEditingController(text: 'rajasthan');
+  TextEditingController _stateController =
+      TextEditingController(text: 'rajasthan');
   TextEditingController _countryController = TextEditingController(text: 'IN');
 
   final FocusNode _firstNameNode = FocusNode(),
@@ -221,10 +223,9 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                         widget.function();
                       }
                     },
-//
                     color: Theme.of(context).accentColor,
                     child: Text(
-                      'Review Order',
+                      'CONTINUE TO SHIPPING',
                       style:
                           TextStyle(color: Colors.white, fontFamily: "Raleway"),
                     ),

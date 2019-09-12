@@ -181,7 +181,6 @@ class WooCommerce implements BaseServices {
     try {
       var response = await wcApi.getAsync("shipping_methods");
       List<dynamic> list = [];
-      debugPrint('$response');
       for (var item in response) {
         list.add(ShippingMethods.fromJson(item));
       }
