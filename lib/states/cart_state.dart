@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:developer';
+
 import 'package:cool_store/models/payment.dart';
 import 'package:cool_store/models/product.dart';
 import 'package:cool_store/models/user.dart';
@@ -109,9 +109,9 @@ class CartState extends ChangeNotifier {
           localSavedProducts = jsonDecode(await _localStorage
               .getItem(Constants.kLocalKey['productsInCart']));
           localSavedProducts.forEach((localJson) {
-            print('$localJson');
+//            print('$localJson');
             final item = LocalSavedProduct.fromJson(localJson);
-            print('$item');
+//            print('$item');
             _productsInCart.update(
                 item.product.id.toString(), (_) => item.quantity,
                 ifAbsent: () => item.quantity);

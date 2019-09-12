@@ -2,6 +2,7 @@ import 'package:cool_store/models/category.dart';
 import 'package:cool_store/models/order.dart';
 import 'package:cool_store/models/payment.dart';
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/models/shipping_methods.dart';
 import 'package:cool_store/models/user.dart';
 import 'package:cool_store/services/base_services.dart';
 import 'package:cool_store/services/woocommerce_api.dart';
@@ -181,9 +182,9 @@ class WooCommerce implements BaseServices {
       var response = await wcApi.getAsync("shipping_methods");
       List<dynamic> list = [];
       debugPrint('$response');
-//      for (var item in response) {
-//        list.add(ShippingMethod.fromJson(item));
-//      }
+      for (var item in response) {
+        list.add(ShippingMethods.fromJson(item));
+      }
       return list;
     } catch (e) {
       throw e;

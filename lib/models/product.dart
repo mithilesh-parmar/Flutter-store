@@ -231,3 +231,4 @@ class ProductVariation {
     return value;
   }
 }
+

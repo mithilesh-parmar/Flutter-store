@@ -183,12 +183,17 @@ class CartScreen extends StatelessWidget {
         itemCount: state.products.length,
         itemBuilder: (context, pos) {
           Product product = state.products.values.elementAt(pos);
+//          Product testProduct = state.localSavedProducts[pos].product;
+//          ProductVariation testProductVariation =
+//              state.localSavedProducts[pos].productVariation;
+//          int quantity = state.localSavedProducts[pos].quantity;
           ProductVariation variation =
               state.productVariationsInCart[product.id.toString()];
           return CartItem(
             product: product,
             quantity: state.productsInCart[product.id.toString()],
             variation: variation,
+//            quantity: quantity,
             onPrimaryButtonPressed: () {
               state.addProductToWishList(product, variation);
             },
@@ -214,7 +219,6 @@ class CartScreen extends StatelessWidget {
           iconColor: Theme.of(context).iconTheme.color.withOpacity(.9),
           path: 'assets/shoppint_cart_empty.svg',
           primaryText: 'Looks like you haven\'t made your choice yet !',
-
         ),
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
