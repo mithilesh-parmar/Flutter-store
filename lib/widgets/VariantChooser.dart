@@ -93,7 +93,7 @@ class _VariantChooserState extends State<VariantChooser> {
         padding: EdgeInsets.all(8),
         constraints: BoxConstraints(
             minWidth: Constants.screenAwareSize(30, context),
-            minHeight: Constants.screenAwareSize(35, context)),
+            minHeight: Constants.screenAwareSize(40, context)),
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),

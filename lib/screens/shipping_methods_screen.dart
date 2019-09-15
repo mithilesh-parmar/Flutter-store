@@ -48,7 +48,7 @@ class ShippingMethodsScreen extends StatelessWidget {
                             fontFamily: "Raleway",
                             color: state.selectedShippingMethod.isEqual(item)
                                 ? Theme.of(context).accentColor
-                                : Colors.black),
+                                : Theme.of(context).textTheme.title.color),
                       ),
                       subtitle: Text(
                         '${item.description}',
