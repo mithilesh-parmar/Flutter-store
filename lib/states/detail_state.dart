@@ -9,13 +9,15 @@ import 'package:provider/provider.dart';
 enum Errors { variationNotSelected, productNotLoaded }
 
 class DetailState extends ChangeNotifier {
-  bool isLoading, isRelatedProductsLoading, isVariantsLoading;
+  bool isLoading, isRelatedProductsLoading, isVariantsLoading, isReviewsLoading;
   String _quantity;
   Services _services;
   ProductVariation _currentVariation;
   Product _product;
   List<Product> relatedProducts;
   List<ProductVariation> _productVariations;
+  List<Review> reviews;
+
   String _productId;
   int _categoryId;
 
@@ -31,8 +33,10 @@ class DetailState extends ChangeNotifier {
     isLoading = true;
     isVariantsLoading = true;
     isRelatedProductsLoading = true;
+    isReviewsLoading = true;
     relatedProducts = List();
     _productVariations = List();
+    reviews = List();
     _services = Services();
     initProduct();
   }
@@ -49,6 +53,7 @@ class DetailState extends ChangeNotifier {
       notifyListeners();
       initRelatedProducts();
       initProductVariations();
+      initReviews();
     } catch (e) {
       print('$e');
 //      throw Exception('No INTERNET CONNECTION');
@@ -72,6 +77,12 @@ class DetailState extends ChangeNotifier {
     relatedProducts = await _services.fetchProductsByCategory(
         categoryId: _categoryId, page: 1);
     isRelatedProductsLoading = false;
+    notifyListeners();
+  }
+
+  initReviews() async {
+    reviews = await _services.getReviews(_product.id);
+    isReviewsLoading = false;
     notifyListeners();
   }
 

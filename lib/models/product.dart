@@ -123,9 +123,6 @@ class ProductAttribute {
   String name;
   List options;
 
-
-
-
   ProductAttribute.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson["id"];
     name = parsedJson["name"];
@@ -159,12 +156,8 @@ class Attribute {
 
   Attribute();
 
-  Map<String,dynamic> toJson(){
-    return {
-      'id':id,
-      'name':name,
-      'option':option
-    };
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'name': name, 'option': option};
   }
 
   Attribute.fromJson(Map<String, dynamic> parsedJson) {
@@ -232,3 +225,28 @@ class ProductVariation {
   }
 }
 
+class Review {
+  int id, productId;
+  String reviewer, reviewerEmail, review;
+  int rating;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'product_id': productId,
+      'reviewer': reviewer,
+      'reviewer_email': reviewerEmail,
+      'review': review,
+      'rating': rating
+    };
+  }
+
+  Review.fromJson(Map<String, dynamic> parsedJson) {
+    id = parsedJson['id'];
+    productId = parsedJson['product_id'];
+    reviewer = parsedJson['reviewer'];
+    reviewerEmail = parsedJson['reviewer_email'];
+    review = parsedJson['review'];
+    rating = parsedJson['rating'];
+  }
+}

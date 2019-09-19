@@ -143,6 +143,7 @@ class WooCommerceAPI {
 //    debugPrint('int woocommerceAPI getAsync method');
     var url = this._getOAuthURL("GET", endPoint);
 
+    print('$url');
     final response = await http.get(url);
 
     return json.decode(response.body);

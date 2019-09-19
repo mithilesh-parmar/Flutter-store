@@ -1,7 +1,9 @@
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:cool_store/models/product.dart';
+import 'package:cool_store/states/detail_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:provider/provider.dart';
 
 class ProductDescription extends StatelessWidget {
   final Product product;
@@ -11,6 +13,7 @@ class ProductDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<DetailState>(context);
     bool enableReview = true;
 
     return Column(
@@ -32,9 +35,15 @@ class ProductDescription extends StatelessWidget {
           ExpansionInfo(
             title: 'REVIEWS',
             children: <Widget>[
-              ListTile(
-                title: Text('No reviews yet'),
-              )
+              state.isReviewsLoading
+                  ? CircularProgressIndicator()
+                  : state.reviews.length > 0
+                      ? ListTile(
+                          title: Text(state.reviews[0].review),
+                        )
+                      : ListTile(
+                          title: Text('No Reviews'),
+                        )
             ],
           ),
         Container(

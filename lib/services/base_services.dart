@@ -233,7 +233,7 @@ class Services implements BaseServices {
   }
 
   @override
-  Future<List> getReviews(productId) async {
+  Future<List<Review>> getReviews(productId) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {

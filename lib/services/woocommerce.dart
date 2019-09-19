@@ -162,14 +162,15 @@ class WooCommerce implements BaseServices {
   }
 
   @override
-  Future<List> getReviews(productId) async {
+  Future<List<Review>> getReviews(productId) async {
+    print('Reviews for $productId');
     try {
-      var response = await wcApi.getAsync("products/$productId/reviews");
-      List<dynamic> list = [];
-      debugPrint('$list');
-//      for (var item in response) {
-//        list.add(Review.fromJson(item));
-//      }
+      var response = await wcApi.getAsync("products/reviews/$productId");
+      List<Review> list = [];
+      debugPrint('$response');
+      for (var item in response) {
+        list.add(Review.fromJson(item));
+      }
       return list;
     } catch (e) {
       throw e;
