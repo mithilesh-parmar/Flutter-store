@@ -9,14 +9,18 @@ import 'package:provider/provider.dart';
 enum Errors { variationNotSelected, productNotLoaded }
 
 class DetailState extends ChangeNotifier {
-  bool isLoading, isRelatedProductsLoading, isVariantsLoading, isReviewsLoading;
+  bool isLoading,
+      isRelatedProductsLoading,
+      isVariantsLoading,
+      isReviewsLoading,
+      doesContainReviews;
   String _quantity;
   Services _services;
   ProductVariation _currentVariation;
   Product _product;
   List<Product> relatedProducts;
   List<ProductVariation> _productVariations;
-  List<Review> reviews;
+  List<Review> _reviews;
 
   String _productId;
   int _categoryId;
@@ -34,9 +38,10 @@ class DetailState extends ChangeNotifier {
     isVariantsLoading = true;
     isRelatedProductsLoading = true;
     isReviewsLoading = true;
+    doesContainReviews = false;
     relatedProducts = List();
     _productVariations = List();
-    reviews = List();
+    _reviews = List();
     _services = Services();
     initProduct();
   }
@@ -54,7 +59,6 @@ class DetailState extends ChangeNotifier {
       initRelatedProducts();
       initProductVariations();
       initReviews();
-
     } catch (e) {
       print('$e');
 //      throw Exception('No INTERNET CONNECTION');
@@ -82,12 +86,17 @@ class DetailState extends ChangeNotifier {
   }
 
   initReviews() async {
-    reviews = await _services.getReviews(_product.id);
+    _reviews = await _services.getReviews(_product.id);
+    if (_reviews.length > 0) doesContainReviews = true;
     isReviewsLoading = false;
     notifyListeners();
   }
 
-
+  List<Review> getTopReviews() {
+    List<Review> topReviews =
+        _reviews.length > 5 ? _reviews.sublist(0, 5) : _reviews;
+    return topReviews;
+  }
 
   initProductVariations() async {
     _productVariations = await _services.getProductVariations(_product);

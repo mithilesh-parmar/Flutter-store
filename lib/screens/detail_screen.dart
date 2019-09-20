@@ -89,11 +89,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           children: <Widget>[
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
+                                  const EdgeInsets.symmetric(vertical: 16.0),
                               child: Text(
                                 'YOU MIGHT LIKE',
                                 style: TextStyle(
-                                    fontFamily: 'Raleway', fontSize: 14),
+                                    fontSize: 17, fontFamily: 'Raleway'),
                               ),
                             ),
                             Consumer<DetailState>(

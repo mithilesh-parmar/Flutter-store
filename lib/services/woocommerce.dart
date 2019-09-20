@@ -165,13 +165,15 @@ class WooCommerce implements BaseServices {
 
   @override
   Future<List<Review>> getReviews(productId) async {
-    print('Reviews for $productId');
+//    print('Reviews for $productId');
     try {
       Map<String, String> data = HashMap();
-      data.update('product', (_) => productId.toString(), ifAbsent: () => productId.toString());
-      var response = await wcApi.getAsync("products/reviews?product=$productId");
+      data.update('product', (_) => productId.toString(),
+          ifAbsent: () => productId.toString());
+      var response =
+          await wcApi.getAsync("products/reviews?product=$productId");
       List<Review> list = [];
-      debugPrint('$response');
+//      debugPrint('$response');
       for (var item in response) {
         list.add(Review.fromJson(item));
       }

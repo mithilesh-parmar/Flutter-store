@@ -143,26 +143,26 @@ class WooCommerceAPI {
 //    debugPrint('int woocommerceAPI getAsync method');
     var url = this._getOAuthURL("GET", endPoint);
 
-    print('$url');
-    if (data != null) {
-      var client = new http.Client();
-      Map<String, String> headers = HashMap();
-      headers.update(HttpHeaders.contentTypeHeader,
-          (_) => 'application/json; charset=utf-8',
-          ifAbsent: () => 'application/json; charset=utf-8');
-      headers.update(HttpHeaders.cacheControlHeader, (_) => 'no-cache',
-          ifAbsent: () => 'no-cache');
-      print('${Uri.parse(url)} body: ${json.encode(data)}');
-      var response = await client.post(Uri.parse(url),
-          headers: headers, body: json.encode(data));
-      print('response ${response.body}');
-      return json.decode(response.body);
-    } else {
-      print('$url');
-      final response = await http.get(url);
+////    print('$url');
+//    if (data != null) {
+//      var client = new http.Client();
+//      Map<String, String> headers = HashMap();
+//      headers.update(HttpHeaders.contentTypeHeader,
+//          (_) => 'application/json; charset=utf-8',
+//          ifAbsent: () => 'application/json; charset=utf-8');
+//      headers.update(HttpHeaders.cacheControlHeader, (_) => 'no-cache',
+//          ifAbsent: () => 'no-cache');
+//      print('${Uri.parse(url)} body: ${json.encode(data)}');
+//      var response = await client.post(Uri.parse(url),
+//          headers: headers, body: json.encode(data));
+//      print('response ${response.body}');
+//      return json.decode(response.body);
+//    } else {
+//      print('$url');
+    final response = await http.get(url);
 
-      return json.decode(response.body);
-    }
+    return json.decode(response.body);
+//    }
   }
 
   Future<dynamic> postAsync(String endPoint, Map data) async {
