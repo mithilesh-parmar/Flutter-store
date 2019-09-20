@@ -54,6 +54,7 @@ class DetailState extends ChangeNotifier {
       initRelatedProducts();
       initProductVariations();
       initReviews();
+
     } catch (e) {
       print('$e');
 //      throw Exception('No INTERNET CONNECTION');
@@ -85,6 +86,8 @@ class DetailState extends ChangeNotifier {
     isReviewsLoading = false;
     notifyListeners();
   }
+
+
 
   initProductVariations() async {
     _productVariations = await _services.getProductVariations(_product);

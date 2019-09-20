@@ -230,9 +230,16 @@ class Review {
   String reviewer, reviewerEmail, review;
   int rating;
 
+  Review(
+      {this.id,
+      this.productId,
+      this.reviewer,
+      this.reviewerEmail,
+      this.review,
+      this.rating});
+
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'product_id': productId,
       'reviewer': reviewer,
       'reviewer_email': reviewerEmail,

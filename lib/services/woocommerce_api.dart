@@ -139,44 +139,85 @@ class WooCommerceAPI {
     return requestUrl;
   }
 
-  Future<dynamic> getAsync(String endPoint) async {
+  Future<dynamic> getAsync(String endPoint, {Map data}) async {
 //    debugPrint('int woocommerceAPI getAsync method');
     var url = this._getOAuthURL("GET", endPoint);
 
     print('$url');
-    final response = await http.get(url);
+    if (data != null) {
+      var client = new http.Client();
+      Map<String, String> headers = HashMap();
+      headers.update(HttpHeaders.contentTypeHeader,
+          (_) => 'application/json; charset=utf-8',
+          ifAbsent: () => 'application/json; charset=utf-8');
+      headers.update(HttpHeaders.cacheControlHeader, (_) => 'no-cache',
+          ifAbsent: () => 'no-cache');
+      print('${Uri.parse(url)} body: ${json.encode(data)}');
+      var response = await client.post(Uri.parse(url),
+          headers: headers, body: json.encode(data));
+      print('response ${response.body}');
+      return json.decode(response.body);
+    } else {
+      print('$url');
+      final response = await http.get(url);
 
-    return json.decode(response.body);
+      return json.decode(response.body);
+    }
   }
 
   Future<dynamic> postAsync(String endPoint, Map data) async {
     var url = this._getOAuthURL("POST", endPoint);
 
     var client = new http.Client();
-    var request = new http.Request('POST', Uri.parse(url));
-    request.headers[HttpHeaders.contentTypeHeader] =
-        'application/json; charset=utf-8';
-    request.headers[HttpHeaders.cacheControlHeader] = "no-cache";
-    request.body = json.encode(data);
-    var response =
-        await client.send(request).then((res) => res.stream.bytesToString());
-    var dataResponse = await json.decode(response);
-    return dataResponse;
+//    var request = new http.Request('POST', Uri.parse(url));
+//    request.headers[HttpHeaders.contentTypeHeader] =
+//        'application/json; charset=utf-8';
+//    request.headers[HttpHeaders.cacheControlHeader] = "no-cache";
+//    request.body = json.encode(data);
+//
+//    var response =
+//        await client.send(request).then((res) => res.stream.bytesToString());
+//    var dataResponse = await json.decode(response);
+//    return dataResponse;
+    Map<String, String> headers = HashMap();
+    headers.update(
+        HttpHeaders.contentTypeHeader, (_) => 'application/json; charset=utf-8',
+        ifAbsent: () => 'application/json; charset=utf-8');
+    headers.update(HttpHeaders.cacheControlHeader, (_) => 'no-cache',
+        ifAbsent: () => 'no-cache');
+    var response = await client.post(Uri.parse(url),
+        headers: headers, body: json.encode(data));
+    print('response ${response.body}');
+    return json.decode(response.body);
   }
 
   Future<dynamic> putAsync(String endPoint, Map data) async {
     var url = this._getOAuthURL("PUT", endPoint);
 
+    print('url: $url');
     var client = new http.Client();
-    var request = new http.Request('PUT', Uri.parse(url));
-    request.headers[HttpHeaders.contentTypeHeader] =
-        'application/json; charset=utf-8';
-    request.headers[HttpHeaders.cacheControlHeader] = "no-cache";
-    request.body = json.encode(data);
-    var response =
-        await client.send(request).then((res) => res.stream.bytesToString());
-    var dataResponse = await json.decode(response);
-    return dataResponse;
+//    var request = new http.Request('PUT', Uri.parse(url));
+//    request.headers[HttpHeaders.contentTypeHeader] =
+//        'application/json; charset=utf-8';
+//    request.headers[HttpHeaders.cacheControlHeader] = "no-cache";
+//    request.body = json.encode(data);
+
+//    print(
+//        'request : $request body ${request.body} headers: ${request.headers}');
+//    var response =
+//        await client.send(request).then((res) => res.stream.bytesToString());
+//    var dataResponse = await json.decode(response);
+//    print('data response: $dataResponse');
+    Map<String, String> headers = HashMap();
+    headers.update(
+        HttpHeaders.contentTypeHeader, (_) => 'application/json; charset=utf-8',
+        ifAbsent: () => 'application/json; charset=utf-8');
+    headers.update(HttpHeaders.cacheControlHeader, (_) => 'no-cache',
+        ifAbsent: () => 'no-cache');
+    var response = await client.put(Uri.parse(url),
+        headers: headers, body: json.encode(data));
+    print('response ${response.body}');
+    return json.decode(response.body);
   }
 
   void dispose() {}

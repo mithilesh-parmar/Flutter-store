@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cool_store/models/category.dart';
 import 'package:cool_store/models/order.dart';
 import 'package:cool_store/models/payment.dart';
@@ -165,7 +167,9 @@ class WooCommerce implements BaseServices {
   Future<List<Review>> getReviews(productId) async {
     print('Reviews for $productId');
     try {
-      var response = await wcApi.getAsync("products/reviews/$productId");
+      Map<String, String> data = HashMap();
+      data.update('product', (_) => productId.toString(), ifAbsent: () => productId.toString());
+      var response = await wcApi.getAsync("products/reviews?product=$productId");
       List<Review> list = [];
       debugPrint('$response');
       for (var item in response) {
@@ -250,6 +254,20 @@ class WooCommerce implements BaseServices {
 
   void dispose() {
     wcApi.dispose();
+  }
+
+  @override
+  Future createReview({Review review}) async {
+    try {
+      var response = await wcApi.postAsync('products/reviews', review.toJson());
+      if (response["message"] != null) {
+        throw Exception(response["message"]);
+      } else {
+        return true;
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 
   /// Get Nonce for Any Action

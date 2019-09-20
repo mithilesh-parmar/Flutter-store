@@ -56,6 +56,8 @@ abstract class BaseServices {
 //
 //  Future<List<dynamic>> getProducts();
 
+  Future createReview({Review review});
+
   Future<List<dynamic>> fetchProductsByCategory(
       {categoryId, page, minPrice, maxPrice, orderBy, lang, order});
 
@@ -322,5 +324,16 @@ class Services implements BaseServices {
 
   void dispose() {
 //    serviceApi.dispose();
+  }
+
+  @override
+  Future createReview({Review review}) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return serviceApi.createReview(review: review);
+    } else {
+      throw Exception("No internet connection");
+    }
   }
 }
