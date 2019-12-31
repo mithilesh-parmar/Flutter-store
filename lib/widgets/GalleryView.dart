@@ -36,8 +36,7 @@ class _GalleryViewState extends State<GalleryView> {
                 itemBuilder: (BuildContext context, int index) {
                   var item = widget.product.images[index];
                   Widget image = ExtendedImage.network(item,
-                      fit: BoxFit.contain, mode: ExtendedImageMode.Gesture,
-                      initGestureConfigHandler: (state) {
+                      fit: BoxFit.contain, initGestureConfigHandler: (state) {
                     return GestureConfig(
                         minScale: 0.9,
                         animationMinScale: 0.7,
