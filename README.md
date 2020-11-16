@@ -13,6 +13,8 @@ Show some ❤️ and star the repo to support the project
 ## Created & Maintained by
 [Mithlesh Parmar](https://github.com/mithilesh-parmar) ([linkedin](https://www.linkedin.com/in/mithilesh-parmar-97395712b/))
 
+## Screen recording of the app
+[YouTube](https://www.youtube.com/watch?v=TGCEG3YHbWQ)
 
 # License
 >MIT License
